@@ -1,0 +1,36 @@
+//
+//  Prefix header
+//
+//  The contents of this file are implicitly included at the beginning of every source file.
+//
+
+#import <Availability.h>
+
+#ifndef __IPHONE_5_0
+#warning "This project uses features only available in iOS SDK 5.0 and later."
+#endif
+
+#ifdef __OBJC__
+    #import <UIKit/UIKit.h>
+    #import <Foundation/Foundation.h>
+    #define ICON_FONT @"Ionicons"
+    #define GOTHAM_ULTRA_ITALIC @"GothamHTF-UltraItalic"
+    #define GOTHAM_MEDIUM @"GothamHTF-Medium"
+    #define GOTHAM_BOLD_CONDENSED @"GothamHTF-BoldCondensed"
+    #define GOTHAM_LIGHT_ITALIC @"GothamHTF-LightItalic"
+    #define GOTHAM_THIN @"GothamHTF-Thin"
+    #define GOTHAM_ULTRA @"GothamHTF-Ultra"
+    #define GOTHAM_BOLD_ITALIC @"GothamHTF-BoldItalic"
+    #define GOTHAM_XLIGHT @"GothamHTF-XLight"
+    #define GOTHAM_BOLD @"GothamHTF-Bold"
+    #define GOTHAM_BOOK_ITALIC @"GothamHTF-BookItalic"
+    #define GOTHAM_LIGHT @"GothamHTF-Light"
+    #define GOTHAM_BOOK @"GothamHTF-Book"
+    #define GOTHAM_THIN_ITALIC @"GothamHTF-ThinItalic"
+    #define GOTHAM_BLACK_ITALIC @"GothamHTF-BlackItalic"
+    #define GOTHAM_BLACK @"GothamHTF-Black"
+    #define GOTHAM_BOOK_CONDENSED @"GothamHTF-BookCondensed"
+    #define GOTHAM_LIGHT_CONDENSED @"GothamHTF-LightCondensed"
+    #define GOTHAM_MED_CONDENSED @"GothamHTF-MediumCondensed"
+    #define GOTHAM_XLIGHT_ITALIC @"GothamHTF-XLightItalic"
+#endif
