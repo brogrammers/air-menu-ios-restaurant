@@ -51,7 +51,7 @@
             {
                 attributes.center = CGPointMake(attributes.center.x, attributes.center.y + offset);
             }
-        }
+        }        
     }];
     return attributes;
 }

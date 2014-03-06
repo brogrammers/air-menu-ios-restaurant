@@ -10,6 +10,8 @@
 
 @interface AMRestaurantDataCell : UICollectionViewCell
 @property (nonatomic, weak, readonly) UILabel *headerLabel;
+@property (nonatomic, weak, readonly) UILabel *subheaderLabel;
 @property (nonatomic, weak, readonly) UIView *containerView;
-@property (nonatomic, weak, readwrite) NSIndexPath *indexPath;
+@property (nonatomic, strong, readwrite) NSIndexPath *indexPath;
+@property (nonatomic, strong, readwrite) UIColor *background;
 @end

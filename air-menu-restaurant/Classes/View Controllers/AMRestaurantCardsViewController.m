@@ -7,18 +7,18 @@
 //
 
 #import <UIView+AutoLayout/UIView+AutoLayout.h>
-#import "AMRestaurantViewController.h"
+#import "AMRestaurantCardsViewController.h"
 #import "UIViewController+AMTwinViewController.h"
 #import "AMRestaurantDataCell.h"
 #import "AMSquishyLayout.h"
 
-@interface AMRestaurantViewController () <UICollectionViewDataSource, UICollectionViewDelegate>
+@interface AMRestaurantCardsViewController () <UICollectionViewDataSource, UICollectionViewDelegate>
 @property (nonatomic, weak) UICollectionView *collectionView;
 @property (nonatomic, strong) AMSquishyLayout *horizontalLayout;
 @property (nonatomic, strong) AMSquishyLayout *verticalLayout;
 @end
 
-@implementation AMRestaurantViewController
+@implementation AMRestaurantCardsViewController
 
 #pragma mark - View Controller lifecycle
 
@@ -27,11 +27,17 @@
     [self createCollectionView];
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
+    self.collectionView.panGestureRecognizer.maximumNumberOfTouches = 1;
+    self.collectionView.panGestureRecognizer.minimumNumberOfTouches = 1;
+    self.collectionView.clipsToBounds = NO;
+    self.view.clipsToBounds = NO;
     [self.collectionView registerClass:[AMRestaurantDataCell class] forCellWithReuseIdentifier:@"data_cell"];
     self.view.backgroundColor = [UIColor clearColor];
     self.collectionView.backgroundColor = [UIColor clearColor];
     UITapGestureRecognizer *tapGestureRecogniser = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTap:)];
     [self.collectionView addGestureRecognizer:tapGestureRecogniser];
+    self.collectionView.showsVerticalScrollIndicator = NO;
+    self.collectionView.showsHorizontalScrollIndicator = NO;
 }
 
 -(void)viewDidLayoutSubviews
@@ -92,6 +98,11 @@
     }
 }
 
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
+{
+    return gestureRecognizer.numberOfTouches == 1;
+}
+
 #pragma mark - Collection View Delegate
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section;
@@ -103,7 +114,17 @@
 {
     AMRestaurantDataCell *cell = (AMRestaurantDataCell *) [collectionView dequeueReusableCellWithReuseIdentifier:@"data_cell" forIndexPath:indexPath];
     cell.headerLabel.text = @[@"performance", @"menu", @"settings", @"people"][indexPath.row];
+    cell.background = @[[UIColor colorWithRed:53.0f/255.0f green:84.0f/255.0f blue:100.0f/255.0f alpha:1.0],
+                        [UIColor colorWithRed:58.0f/255.0f green:147/255.0f blue:221/255.0f alpha:1.0],
+                        [UIColor colorWithRed:251.0f/255.0f green:165.0f/255.0f blue:63.0f/255.0f alpha:1.0],
+                        [UIColor colorWithRed:27.0f/255.0f green:117.0f/255.0f blue:158.0f/255.0f alpha:1.0]][indexPath.row];
     cell.indexPath = indexPath;
+    cell.subheaderLabel.text = @[@"", @"", @"", @""][indexPath.row];
+    cell.subheaderLabel.textAlignment = NSTextAlignmentCenter;
+    if(indexPath.row == 3 || indexPath.row == 2)
+    {
+        cell.subheaderLabel.font = [UIFont fontWithName:ICON_FONT size:34];
+    }
     return cell;
 }
 

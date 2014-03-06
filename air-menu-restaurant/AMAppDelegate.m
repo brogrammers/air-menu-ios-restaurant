@@ -8,17 +8,41 @@
 
 #import "AMAppDelegate.h"
 #import "AMTwinViewController.h"
-#import "AMRestaurantViewController.h"
+#import "AMRestaurantCardsViewController.h"
+#import "AMRestaurantQuickViewController.h"
+#import "AMCompanyViewController.h"
+#import "AMSidePanelViewContoller.h"
+
 @implementation AMAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    AMTwinViewController *controller = (AMTwinViewController *) self.window.rootViewController;
-    [controller setViewController:[[AMRestaurantViewController alloc] init] inPosition:AMTwinViewControllerPositionFirst];
+    AMTwinViewController *controller = [[AMTwinViewController alloc] init];
+    [controller setViewController:[[AMRestaurantCardsViewController alloc] init] inPosition:AMTwinViewControllerPositionFirst];
+    [controller setViewController:[[AMRestaurantQuickViewController alloc] init] inPosition:AMTwinViewControllerPositionSecond];
+    
+    AMSidePanelViewContoller *viewController = (AMSidePanelViewContoller *) self.window.rootViewController;
+    [viewController setSidePanelViewController:[[AMCompanyViewController alloc] init]];
+    [viewController setContentViewController:controller];
+     
+    
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     UIColor *background = [[UIColor alloc] initWithPatternImage:[self backgroundImage]];
     self.window.backgroundColor = background;
+    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeAlert|
+                                                                           UIRemoteNotificationTypeBadge|
+                                                                           UIRemoteNotificationTypeSound)];
     return YES;
+}
+
+-(void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
+    
+}
+
+-(void) application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
+{
+    
 }
 
 -(UIImage *)backgroundImage
@@ -54,3 +78,8 @@
 }
 
 @end
+
+
+
+
+

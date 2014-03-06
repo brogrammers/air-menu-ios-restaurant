@@ -30,18 +30,23 @@
 
 @implementation AMTwinViewController
 
--(void)awakeFromNib
+-(id)init
 {
-    [self setup];
+    self = [super init];
+    if(self)
+    {
+        [self setup];
+    }
+    return self;
 }
 
 -(void)setup
 {
     self.view.backgroundColor = [UIColor clearColor];
+    self.view.clipsToBounds = NO;
     [self setupScrollView];
     [self setupFirstContainer];
     [self setupSecondContainer];
-    self.secondContainer.backgroundColor = [UIColor redColor];
 }
 
 -(void)setupScrollView
@@ -56,6 +61,7 @@
 {
     UIView *firstContainer = [UIView newAutoLayoutView];
     self.firstContainer = firstContainer;
+    self.firstContainer.clipsToBounds = NO;
     [self.scrollViewInnerContainer addSubview:self.firstContainer];
     self.firstContainerWidthConstraint = [self.firstContainer autoSetDimension:ALDimensionWidth toSize:320];
     [self.firstContainer autoMatchDimension:ALDimensionHeight toDimension:ALDimensionHeight ofView:self.scrollViewInnerContainer withOffset:0];
@@ -131,7 +137,7 @@
 -(void)expandFirstViewControllerWithAnimationBlock:(Animation)animation completion:(Completion)completion
 {
     self.expanded = YES;
-    [UIView animateWithDuration:0.3
+    [UIView animateWithDuration:0.15
                           delay:0.0
                         options:UIViewAnimationOptionCurveEaseIn
                      animations:^{

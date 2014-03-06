@@ -4,10 +4,10 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <scenes>
-        <!--Twin View Controller-->
+        <!--Side Panel View Contoller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="AMTwinViewController" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="AMSidePanelViewContoller" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="P4b-sA-cva"/>
                         <viewControllerLayoutGuide type="bottom" id="fDL-01-6QW"/>

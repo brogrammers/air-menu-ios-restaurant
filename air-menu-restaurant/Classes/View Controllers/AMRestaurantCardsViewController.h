@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AMRestaurantViewController : UIViewController
+@interface AMRestaurantCardsViewController : UIViewController
 
 @end

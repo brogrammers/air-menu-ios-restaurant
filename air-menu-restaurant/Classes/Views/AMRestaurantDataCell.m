@@ -34,6 +34,12 @@
     self.layer.shadowPath = [UIBezierPath bezierPathWithRoundedRect:CGRectInset(self.bounds, 3, 0) cornerRadius:20].CGPath;
 }
 
+-(void)setBackground:(UIColor *)background
+{
+    _background = background;
+    self.parent.backgroundColor = _background;
+}
+
 -(void)setIndexPath:(NSIndexPath *)indexPath
 {
     _indexPath = indexPath;
@@ -69,7 +75,7 @@
 {
     UIView *parent = [UIView newAutoLayoutView];
     self.parent = parent;
-    self.parent.backgroundColor = [UIColor colorWithRed:53/255.0f green:84/255.0f blue:100/255.0f alpha:1.0];
+    self.parent.backgroundColor = [UIColor whiteColor];
     self.parent.layer.cornerRadius = 20;
     [self.contentView addSubview:self.parent];
     [self.parent autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
@@ -94,7 +100,6 @@
     UILabel *label = [UILabel newAutoLayoutView];
     self.subheaderLabel = label;
     self.subheaderLabel.font = [UIFont fontWithName:ICON_FONT size:30];
-    self.subheaderLabel.text = @"";
     self.subheaderLabel.textColor = [UIColor colorWithRed:34.0f/255.0f green:54.0f/255.0f blue:64.0f/255.0f alpha:1.0];
     [self.parent addSubview:self.subheaderLabel];
     [self.subheaderLabel autoPinEdge:ALEdgeLeading toEdge:ALEdgeLeading ofView:self.parent withOffset:20];
