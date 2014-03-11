@@ -8,6 +8,7 @@
 
 #define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
 #import <UIView+AutoLayout/UIView+AutoLayout.h>
+#import <TDMScreenEdgePanGestureRecognizer/TDMScreenEdgePanGestureRecognizer.h>
 #import "AMSidePanelViewContoller.h"
 #import "AMThresholdedDirectionPanGestureRecogniser.h"
 
@@ -17,22 +18,38 @@
 @property (nonatomic, readwrite, weak) UIView *sidePanel;
 @property (nonatomic, readwrite, weak) NSLayoutConstraint *sidePanelTrailingEdge;
 @property (nonatomic, readwrite) BOOL sidePanelOpened;
+@property (nonatomic, readwrite) TDMScreenEdgePanGestureRecognizer *recogniser;
 @end
 
 @implementation AMSidePanelViewContoller
 
--(void)awakeFromNib
+-(id)init
 {
-    [self createContentView];
-    [self createSideMenu];
-    self.view.backgroundColor = [UIColor clearColor];
-    AMThresholdedDirectionPanGestureRecogniser *recogniser = [[AMThresholdedDirectionPanGestureRecogniser alloc] initWithTarget:self action:@selector(didPan:)];
-    recogniser.direction = AMDirectionPanGestureRecognizerHorizontal;
-    recogniser.minimumNumberOfTouches = 2;
-    recogniser.beginTreshold = 10;
-    self.sidePanelOpened = NO;
-    self.view.clipsToBounds = NO;
-    [self.view addGestureRecognizer:recogniser];
+    self = [super init];
+    if(self)
+    {
+        [self createContentView];
+        [self createSideMenu];
+        self.view.backgroundColor = [UIColor clearColor];
+//        AMThresholdedDirectionPanGestureRecogniser *recogniser = [[AMThresholdedDirectionPanGestureRecogniser alloc] initWithTarget:self action:@selector(didPan:)];
+//        recogniser.direction = AMDirectionPanGestureRecognizerHorizontal;
+//        recogniser.minimumNumberOfTouches = 2;
+//        recogniser.beginTreshold = 10;
+//        self.sidePanelOpened = NO;
+        TDMScreenEdgePanGestureRecognizer *recogniser = [[TDMScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(didPan:)];
+        [recogniser requireToFailSubScrollViewsPanGestures];
+        recogniser.edges = UIRectEdgeLeft;
+        self.recogniser = recogniser;
+        self.view.clipsToBounds = NO;
+        [self.view addGestureRecognizer:recogniser];
+    }
+    return self;
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self.recogniser requireToFailSubScrollViewsPanGestures];
 }
 
 -(void)viewDidLayoutSubviews

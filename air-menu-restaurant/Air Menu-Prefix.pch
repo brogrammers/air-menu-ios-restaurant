@@ -33,4 +33,8 @@
     #define GOTHAM_LIGHT_CONDENSED @"GothamHTF-LightCondensed"
     #define GOTHAM_MED_CONDENSED @"GothamHTF-MediumCondensed"
     #define GOTHAM_XLIGHT_ITALIC @"GothamHTF-XLightItalic"
+    #define MENSCH_BOLD_INLINE @"MenschBoldInline"
+    #define MENSCH_BOLD @"MenschBold"
+    #define MENSCH_REGULAR @"MenschRegular"
+    #define MENSCH_THIN @"MenschThin"
 #endif

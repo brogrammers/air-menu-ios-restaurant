@@ -10,6 +10,8 @@
 #import "AMCompanyViewController.h"
 #import "AMRestaurantCell.h"
 #import "AMActionCell.h"
+#import "AMAddTableHeaderView.h"
+
 @interface AMCompanyViewController() <UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, weak, readwrite) UITableView *tableView;
 @end

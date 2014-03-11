@@ -55,6 +55,7 @@
     self.scrollViewInnerContainer = scrollViewInnerContainer;
     [self.view addSubview:self.scrollViewInnerContainer];
     [self.scrollViewInnerContainer autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+    self.scrollViewInnerContainer.pagingEnabled = YES;
 }
 
 -(void)setupFirstContainer

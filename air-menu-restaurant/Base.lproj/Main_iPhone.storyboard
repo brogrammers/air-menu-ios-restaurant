@@ -4,10 +4,10 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <scenes>
-        <!--Twin View Controller-->
+        <!--Login View Contoller-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
-                <viewController id="vXZ-lx-hvc" customClass="AMTwinViewController" sceneMemberID="viewController">
+                <viewController id="vXZ-lx-hvc" customClass="AMLoginViewContoller" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="XVg-gM-7Wa"/>
                         <viewControllerLayoutGuide type="bottom" id="xyN-kZ-7Aw"/>

@@ -11,5 +11,6 @@
 @interface AMAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-
+-(void)didLogin;
+-(void)didLogout;
 @end

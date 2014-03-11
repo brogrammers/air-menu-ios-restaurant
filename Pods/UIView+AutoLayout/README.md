@@ -3,7 +3,7 @@ UIView+AutoLayout
 
 The ultimate API for creating Auto Layout constraints -- impressively simple, immensely powerful. Comprised of categories on `UIView`, `NSArray`, and `NSLayoutConstraint`.
 
-UIView+AutoLayout provides a developer-friendly interface for the vast majority of Auto Layout use cases. It is designed for clarity and simplicity, taking inspiration from the Auto Layout UI options available in Interface Builder but delivering far more flexibility and capability. The API is also highly efficient, adding only a thin layer of third party code and being engineered for maximum performance (for example, automatically adding constraints to the nearest ancestor view).
+UIView+AutoLayout provides a developer-friendly interface for the vast majority of Auto Layout use cases. It is designed for clarity and simplicity, taking inspiration from the Auto Layout UI options available in Interface Builder but delivering far more flexibility and capability. The API is also highly efficient, as it adds only a thin layer of third party code and is engineered for maximum performance (for example, by automatically adding constraints to the nearest ancestor view).
 
 API Cheat Sheet
 ---------------
@@ -12,24 +12,23 @@ This is just a handy overview of the core API methods. Check out the [header fil
 
 *	*All of the API methods begin with `auto...` for easy autocompletion!*
 *	*All methods that generate constraints also automatically add the constraint(s) to the correct view, then return the newly created constraint(s) for you to optionally store for later adjustment or removal.*
-*	*Many methods below also have a variant which includes a `relation:` parameter to make the constraint an inequality.
+*	*Many methods below also have a variant which includes a `relation:` parameter to make the constraint an inequality.*
 
 **UIView**
 
 *	\+ autoRemoveConstraint(s):
-*	\- autoRemoveConstraintsAffectingView
-*	\- autoRemoveConstraintsAffectingViewAndSubviews
+*	\- autoRemoveConstraintsAffectingView(AndSubviews)
 *	\+ autoSetPriority:forConstraints:
+*   \- autoSetContent(CompressionResistance | Hugging)PriorityForAxis:
 *	\- autoCenterInSuperview:
 *	\- autoAlignAxisToSuperviewAxis:
 *	\- autoPinEdge(s)ToSuperviewEdge(s):withInset(s):
 *	\- autoPinEdge:toEdge:ofView:(withOffset:)
 *	\- autoAlignAxis:toSameAxisOfView:(withOffset:)
-*	\- autoMatchDimension:toDimension:ofView:(withOffset:)(withMultiplier:)
+*	\- autoMatchDimension:toDimension:ofView:(withOffset: | withMultiplier:)
 *	\- autoSetDimension(s)ToSize:
-*	\- autoConstrainAttribute:toAttribute:ofView:(withOffset:)(withMultiplier:)
-*	\- autoPinToTopLayoutGuideOfViewController:withInset:
-*	\- autoPinToBottomLayoutGuideOfViewController:withInset:
+*	\- autoConstrainAttribute:toAttribute:ofView:(withOffset: | withMultiplier:)
+*	\- autoPinTo(Top | Bottom)LayoutGuideOfViewController:withInset:
 
 **NSArray**
 
@@ -48,23 +47,26 @@ Setup
 -----
 *Note: you must be developing for iOS 6.0 or later to use Auto Layout.*
 
-**Manually from GitHub**
-
-1.	Download the `UIView+AutoLayout.h` and `UIView+AutoLayout.m` files and add them to your Xcode project
-2.	`#import UIView+AutoLayout.h` wherever you need it
-
-	*(Hint: adding the import to your precompiled header file once will allow you to access the API from anywhere in your app!)*
-3.	Start joyfully creating constraints in code!
-
 **Using [CocoaPods](http://cocoapods.org)**
 
-1. Add the pod `UIView+AutoLayout` to your [Podfile](https://github.com/CocoaPods/CocoaPods/wiki/A-Podfile).
+1.	Add the pod `UIView+AutoLayout` to your [Podfile](http://guides.cocoapods.org/using/the-podfile.html).
 
-    	platform :ios, '6.0'
     	pod 'UIView+AutoLayout'
 
-2. Run `pod install` from Terminal.
-3. Open your app's `.xcworkspace` file to launch Xcode and start joyfully creating constraints in code!
+2.	Run `pod install` from Terminal, then open your app's `.xcworkspace` file to launch Xcode.
+3.	`#import UIView+AutoLayout.h` wherever you want to use the API.
+
+	*(Hint: adding the import to your precompiled header (.pch) file once will remove the need to import the .h file everywhere!)*
+4.	That's it - now go write some beautifully simple Auto Layout code!
+
+**Manually from GitHub**
+
+1.	Download the `UIView+AutoLayout.h` and `UIView+AutoLayout.m` files in the [Source directory](https://github.com/smileyborg/UIView-AutoLayout/tree/master/Source).
+2.	Add both files to your Xcode project.
+3.	`#import UIView+AutoLayout.h` wherever you want to use the API.
+
+	*(Hint: adding the import to your precompiled header (.pch) file once will remove the need to import the .h file everywhere!)*
+4.	That's it - now go write some beautifully simple Auto Layout code!
 
 **Releases**
 
@@ -84,7 +86,7 @@ Check out some [Tips and Tricks](https://github.com/smileyborg/UIView-AutoLayout
 Limitations
 -----------
 
-*	Will need to use the `NSLayoutConstraint` SDK API directly for some uncommon advanced use cases
+*	May need to use the `NSLayoutConstraint` SDK API directly for some extremely uncommon use cases
 
 UIView+AutoLayout vs. the rest
 ------------------------------
@@ -105,7 +107,7 @@ An overview of the Auto Layout options available, ordered from the lowest- to hi
 	*	Cons: Not the most concise or pure expression of layout code
 *	High-level layout frameworks ([Masonry](https://github.com/cloudkite/Masonry), [KeepLayout](https://github.com/iMartinKiss/KeepLayout))
 	*	Pros: Very clean, simple, and convenient 
-	*	Cons: Cannot mix with SDK APIs, total dependency on third party code, potential compatibility issues when SDK changes
+	*	Cons: Heavy dependency on third party code, cannot mix with SDK APIs, potential compatibility issues with SDK changes, overloaded Objective-C syntax
 
 Problems, Suggestions, Pull Requests?
 -------------------------------------

@@ -4,6 +4,36 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>Pods-AFNetworking.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-AirMenuKit.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-JVFloatLabeledTextField.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-Mantle.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-ObjectiveSugar.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-TDMScreenEdgePanGestureRecognizer.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-UIView+AutoLayout.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -17,12 +47,42 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>42327B98A989427E99798566</key>
+		<key>31F6084894004BCDAA8BC356</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>5D2F2BC63CAC4F80A06F1DBD</key>
+		<key>874D60DFB86C4562B07CBF33</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>A5E918A5385344F3A0BA0730</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>B091BF1A438B410CA4966951</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>B49FA9AA330944EAB9FFFCA6</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>BA29E30F2C11449A9EB0ED76</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C18E125B042344CE89E37D4F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D51890A37AB84D8BA93581A0</key>
 		<dict>
 			<key>primary</key>
 			<true/>
