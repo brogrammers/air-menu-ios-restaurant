@@ -116,7 +116,7 @@
             CATransform3D transform = CATransform3DIdentity;
             transform.m34 = 1.0 / -1500;
             self.contentView.layer.transform = CATransform3DRotate(transform, DEGREES_TO_RADIANS(-40 * xDeltaNormalised) , 0.0, 1.0, 0.0);
-            self.contentView.alpha = 1.2 - xDeltaNormalised;
+            self.contentView.alpha = 1.0 - xDeltaNormalised;
             self.sidePanelTrailingEdge.constant = xDelta;
         }
         else if(xDelta <= 320)
@@ -145,7 +145,7 @@
                                 options:UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
                              animations:^{
                                  self.contentView.layer.transform = CATransform3DRotate(transform, DEGREES_TO_RADIANS(-40) , 0.0, 1.0, 0.0);
-                                 self.contentView.alpha = 0.2;
+                                 self.contentView.alpha = 0.05;
                                  [self.view layoutIfNeeded];
                              }
                              completion:^(BOOL finished) {

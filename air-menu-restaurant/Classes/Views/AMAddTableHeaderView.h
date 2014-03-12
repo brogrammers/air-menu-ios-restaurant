@@ -7,8 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <FRDLivelyButton/FRDLivelyButton.h>
+
+
+@protocol AMAddTableHeaderViewDelegate;
 
 @interface AMAddTableHeaderView : UITableViewHeaderFooterView
-@property UILabel *label;
-@property UIButton *button;
+@property (nonatomic, readonly, weak) UILabel *label;
+@property (nonatomic, readonly, weak) FRDLivelyButton *button;
+@property (nonatomic, readwrite) NSUInteger sectionIndex;
+@property (nonatomic, readwrite, weak) id <AMAddTableHeaderViewDelegate> delegate;
+@end
+
+@protocol AMAddTableHeaderViewDelegate <NSObject>
+-(void)sectionAtIndex:(NSUInteger)index didPressButton:(FRDLivelyButton *)button;
 @end

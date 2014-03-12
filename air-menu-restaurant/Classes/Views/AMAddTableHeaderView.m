@@ -7,7 +7,26 @@
 //
 
 #import "AMAddTableHeaderView.h"
-#import <UIView+Autolayout.h>
+#import <UIView+AutoLayout/UIView+AutoLayout.h>
+
+@interface ExtendedTouchButton : FRDLivelyButton
+@end
+
+@implementation ExtendedTouchButton
+
+- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event {
+    CGRect relativeFrame = self.bounds;
+    UIEdgeInsets hitTestEdgeInsets = UIEdgeInsetsMake(-44, -44, -44, -44);
+    CGRect hitFrame = UIEdgeInsetsInsetRect(relativeFrame, hitTestEdgeInsets);
+    return CGRectContainsPoint(hitFrame, point);
+}
+
+@end
+
+@interface AMAddTableHeaderView()
+@property (nonatomic, readwrite, weak) UILabel *label;
+@property (nonatomic, readwrite, weak) FRDLivelyButton *button;
+@end
 
 @implementation AMAddTableHeaderView
 
@@ -31,18 +50,38 @@
 {
     UILabel *label = [UILabel newAutoLayoutView];
     self.label = label;
+    self.label.textAlignment = NSTextAlignmentCenter;
     [self.contentView addSubview:label];
     [self.label autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+    self.label.font = [UIFont fontWithName:GOTHAM_BOOK size:25];
+    self.label.textColor = [UIColor whiteColor];
 }
+
 
 -(void)setupButton
 {
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
+    FRDLivelyButton *button = [[ExtendedTouchButton alloc] initWithFrame:CGRectMake(0, 0, 25, 25)];
     self.button = button;
-    [self.button setTranslatesAutoresizingMaskIntoConstraints:YES];
+    self.button.options = @{kFRDLivelyButtonColor : [UIColor colorWithRed:1.0f/255.0f green:57.0f/255.0f blue:83.0f/255.0f alpha:1.0],
+                            kFRDLivelyButtonLineWidth : @1.0};
+    [self.button addTarget:self action:@selector(didTapAdd:) forControlEvents:UIControlEventTouchUpInside];
+    button.translatesAutoresizingMaskIntoConstraints = NO;
     [self.contentView addSubview:self.button];
-    [self.button autoPinEdge:ALEdgeLeading toEdge:ALEdgeLeading ofView:self.contentView];
-    [self.button autoPinEdge:ALEdgeTrailing toEdge:ALEdgeTrailing ofView:self.contentView];
+    [self.button autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.label withOffset:0];
+    [self.button autoPinEdge:ALEdgeTrailing toEdge:ALEdgeTrailing ofView:self.contentView withOffset:-20];
+    [self.button autoSetDimension:ALDimensionHeight toSize:25];
+    [self.button autoSetDimension:ALDimensionWidth toSize:25];
+    
+    
+    self.button.layer.shadowColor = [[UIColor blackColor] colorWithAlphaComponent:0.2].CGColor;
+    self.button.layer.shadowOpacity = 1.0;
+    self.button.layer.shadowRadius = 1.0;
+    self.button.layer.shadowOffset = CGSizeMake(0.0f,1.0f);
+}
+
+-(void)didTapAdd:(FRDLivelyButton *)button
+{
+    [self.delegate sectionAtIndex:self.sectionIndex didPressButton:button];
 }
 
 @end

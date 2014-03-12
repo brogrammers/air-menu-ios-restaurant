@@ -33,7 +33,7 @@
     self.restaurantNameLabel = label;
     [self.contentView addSubview:label];
     [self.restaurantNameLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.contentView withOffset:0];
-    [self.restaurantNameLabel autoPinEdge:ALEdgeLeading toEdge:ALEdgeLeading ofView:self.contentView withOffset:20];
+    [self.restaurantNameLabel autoPinEdge:ALEdgeLeading toEdge:ALEdgeLeading ofView:self.contentView withOffset:0];
     [self.restaurantNameLabel autoPinEdge:ALEdgeTrailing toEdge:ALEdgeTrailing ofView:self.contentView withOffset:0];
     [self.restaurantNameLabel autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:self.contentView withOffset:0];
 }
