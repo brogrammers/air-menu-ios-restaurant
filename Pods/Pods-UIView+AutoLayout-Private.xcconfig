@@ -1,5 +1,5 @@
 #include "Pods-UIView+AutoLayout.xcconfig"
 GCC_PREPROCESSOR_DEFINITIONS = COCOAPODS=1
-HEADER_SEARCH_PATHS = "${PODS_ROOT}/BuildHeaders" "${PODS_ROOT}/BuildHeaders/UIView+AutoLayout" "${PODS_ROOT}/Headers" "${PODS_ROOT}/Headers/AFNetworking" "${PODS_ROOT}/Headers/AirMenuKit" "${PODS_ROOT}/Headers/JVFloatLabeledTextField" "${PODS_ROOT}/Headers/Mantle" "${PODS_ROOT}/Headers/ObjectiveSugar" "${PODS_ROOT}/Headers/TDMScreenEdgePanGestureRecognizer" "${PODS_ROOT}/Headers/UIView+AutoLayout"
+HEADER_SEARCH_PATHS = "${PODS_ROOT}/BuildHeaders" "${PODS_ROOT}/BuildHeaders/UIView+AutoLayout" "${PODS_ROOT}/Headers" "${PODS_ROOT}/Headers/AFNetworking" "${PODS_ROOT}/Headers/AirMenuKit" "${PODS_ROOT}/Headers/FRDLivelyButton" "${PODS_ROOT}/Headers/JVFloatLabeledTextField" "${PODS_ROOT}/Headers/Mantle" "${PODS_ROOT}/Headers/ObjectiveSugar" "${PODS_ROOT}/Headers/TDMScreenEdgePanGestureRecognizer" "${PODS_ROOT}/Headers/UIView+AutoLayout"
 OTHER_LDFLAGS = -ObjC
 PODS_ROOT = ${SRCROOT}

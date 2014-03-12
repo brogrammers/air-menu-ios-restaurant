@@ -54,6 +54,12 @@
 #define COCOAPODS_VERSION_MINOR_AirMenuKit 0
 #define COCOAPODS_VERSION_PATCH_AirMenuKit 1
 
+// FRDLivelyButton
+#define COCOAPODS_POD_AVAILABLE_FRDLivelyButton
+#define COCOAPODS_VERSION_MAJOR_FRDLivelyButton 1
+#define COCOAPODS_VERSION_MINOR_FRDLivelyButton 1
+#define COCOAPODS_VERSION_PATCH_FRDLivelyButton 2
+
 // JVFloatLabeledTextField
 #define COCOAPODS_POD_AVAILABLE_JVFloatLabeledTextField
 #define COCOAPODS_VERSION_MAJOR_JVFloatLabeledTextField 0

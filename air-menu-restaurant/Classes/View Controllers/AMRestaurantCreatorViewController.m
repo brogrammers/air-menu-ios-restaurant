@@ -60,5 +60,11 @@
     [self.button autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:self.view withOffset:-20.0f];
     [self.button autoAlignAxisToSuperviewAxis:ALAxisVertical];
     [self.button setTitle:@"CREATE" forState:UIControlStateNormal];
+    [self.button setTitleColor:[UIColor colorWithRed:1.0f/255.0f green:57.0f/255.0f blue:83.0f/255.0f alpha:1.0] forState:UIControlStateNormal];
+    self.button.titleLabel.font = [UIFont fontWithName:MENSCH_THIN size:30];
+    self.button.layer.shadowColor = [[UIColor blackColor] colorWithAlphaComponent:0.2].CGColor;
+    self.button.layer.shadowOpacity = 1.0;
+    self.button.layer.shadowRadius = 1.0;
+    self.button.layer.shadowOffset = CGSizeMake(0.0f,1.0f);
 }
 @end

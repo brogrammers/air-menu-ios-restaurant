@@ -232,12 +232,15 @@
               initialSpringVelocity:0.0
                             options:UIViewAnimationOptionCurveEaseInOut
                          animations:^{
-                             toView.alpha = 1.0;
                              toView.center = CGPointApplyAffineTransform(fromView.center, CGAffineTransformMakeTranslation(0, 50));
                          }
                          completion:^(BOOL finished) {
                              [transitionContext completeTransition:YES];
                          }];
+        
+        [UIView animateWithDuration:0.8f animations:^{
+            toView.alpha = 1.0;
+        }];
     }
     else
     {

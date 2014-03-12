@@ -14,6 +14,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Pods-FRDLivelyButton.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-JVFloatLabeledTextField.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -47,42 +52,47 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>31F6084894004BCDAA8BC356</key>
+		<key>47F93873661F4249B3487FE2</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>874D60DFB86C4562B07CBF33</key>
+		<key>4A19CE05A623445EACE4FC7B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A5E918A5385344F3A0BA0730</key>
+		<key>540A2BDE34534240A054DADD</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>B091BF1A438B410CA4966951</key>
+		<key>7D2CE7B10DF3413790DAE745</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>B49FA9AA330944EAB9FFFCA6</key>
+		<key>842DC59BCC91434B92A00B89</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>BA29E30F2C11449A9EB0ED76</key>
+		<key>AF3BCABC0A2540CB96B809E5</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C18E125B042344CE89E37D4F</key>
+		<key>B5B4433168D4455586691014</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>D51890A37AB84D8BA93581A0</key>
+		<key>BA5D140D3CDB42C6AA79A756</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FC95937AA6724EF98AF77CDA</key>
 		<dict>
 			<key>primary</key>
 			<true/>
