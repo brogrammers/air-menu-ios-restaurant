@@ -30,6 +30,27 @@
 	<true/>
 	<key>UIAppFonts</key>
 	<array>
+        <string>Idlewild-Bold.otf</string>
+		<string>Idlewild-Book.otf</string>
+		<string>Idlewild-Light.otf</string>
+		<string>Idlewild-Medium.otf</string>
+		<string>Idlewild-Thin.otf</string>
+		<string>GothamNarrow-Black.otf</string>
+		<string>GothamNarrow-BlackItalic.otf</string>
+		<string>GothamNarrow-Bold.otf</string>
+		<string>GothamNarrow-BoldItalic.otf</string>
+		<string>GothamNarrow-Book.otf</string>
+		<string>GothamNarrow-BookItalic.otf</string>
+		<string>GothamNarrow-Light.otf</string>
+		<string>GothamNarrow-LightItalic.otf</string>
+		<string>GothamNarrow-Medium.otf</string>
+		<string>GothamNarrow-MediumItalic.otf</string>
+		<string>GothamNarrow-Thin.otf</string>
+		<string>GothamNarrow-ThinItalic.otf</string>
+		<string>GothamNarrow-Ultra.otf</string>
+		<string>GothamNarrow-UltraItalic.otf</string>
+		<string>GothamNarrow-XLight.otf</string>
+		<string>GothamNarrow-XLightItalic.otf</string>
 		<string>mensch-bold.ttf</string>
 		<string>mensch-inline.ttf</string>
 		<string>mensch-thin.ttf</string>

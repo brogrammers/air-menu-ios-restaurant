@@ -12,6 +12,7 @@
 #import "AMActionCell.h"
 #import "AMAddTableHeaderView.h"
 #import "AMRestaurantCreatorViewController.h"
+#import <AMClient+Company.h>
 
 @interface AMFadingTableView : UITableView
 @property CGFloat fadePercentage;
@@ -94,6 +95,7 @@
 @property (nonatomic, weak, readwrite) AMFadingTableView *tableView;
 @property BOOL isCreatingCompany;
 @property BOOL isAppearing;
+@property (nonatomic, readwrite, strong) AMCompany *company;
 @end
 
 @implementation AMCompanyViewController
@@ -101,6 +103,9 @@
 {
     [super viewDidLoad];
     [self createTableView];
+    [[AMClient sharedClient] findCompanyWithIdentifier:@"3" completion:^(AMCompany *company, NSError *error) {
+        self.company = company;
+    }];
 }
 
 -(void)createTableView
@@ -175,6 +180,7 @@
         restaurantCreatorViewController.transitioningDelegate = self;
         restaurantCreatorViewController.modalPresentationStyle = UIModalPresentationCustom;
         restaurantCreatorViewController.delegate = self;
+        restaurantCreatorViewController.company = self.company;
         [self presentViewController:restaurantCreatorViewController animated:YES completion:nil];
     }
     else
@@ -273,7 +279,7 @@
 
 #pragma mark - Restaurant creator delegate 
 
--(void)restaurantCreatorViewController:(AMRestaurantCreatorViewController *)controller didCreateCompany:(AMCompany *)company
+-(void)restaurantCreatorViewController:(AMRestaurantCreatorViewController *)controller didCreateRestaurant:(AMRestaurant *)restaurant
 {
     [self dismissViewControllerAnimated:YES completion:nil];
     [self.tableView setNeedsLayout];

@@ -37,4 +37,30 @@
     #define MENSCH_BOLD @"MenschBold"
     #define MENSCH_REGULAR @"MenschRegular"
     #define MENSCH_THIN @"MenschThin"
+    #define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
+    #define GOTHAM_NARROW_BLACK @"GothamNarrow-Black"
+    #define GOTHAM_NARROW_BLACK_ITALIC @"GothamNarrow-BlackItalic"
+    #define GOTHAM_NARROW_BOLD @"GothamNarrow-Bold"
+    #define GOTHAM_NARROW_BOLD_ITALIC @"GothamNarrow-BoldItalic"
+    #define GOTHAM_NARROW_BOOK @"GothamNarrow-Book"
+    #define GOTHAM_NARROW_BOOK_ITALIC @"GothamNarrow-BookItalic"
+    #define GOTHAM_NARROW_LIGHT @"GothamNarrow-Light"
+    #define GOTHAM_NARROW_LIGHT_ITALIC @"GothamNarrow-LightItalic"
+    #define GOTHAM_NARROW_MEDIUM @"GothamNarrow-Medium"
+    #define GOTHAM_NARROW_MEDIUM_ITALIC @"GothamNarrow-MediumItalic"
+    #define GOTHAM_NARROW_THIN @"GothamNarrow-Thin"
+    #define GOTHAM_NARROW_THIN_ITALIC @"GothamNarrow-ThinItalic"
+    #define GOTHAM_NARROW_ULTRA @"GothamNarrow-Ultra"
+    #define GOTHAM_NARROW_ULTRA_ITALIC @"GothamNarrow-UltraItalic"
+    #define GOTHAM_NARROW_XLIGHT @"GothamNarrow-XLight"
+    #define GOTHAM_NARROW_XLIGHT_ITALIC @"GothamNarrow-XLightItalic"
+    #define IDLEWILD_BOLD @"Idlewild-Bold"
+    #define IDLEWILD_BOOK @"Idlewild-Book"
+    #define IDLEWILD_LIGHT @"Idlewild-Light"
+    #define IDLEWILD_MEDIUM @"Idlewild-Medium"
+    #define IDLEWILD_THIN @"Idlewild-Thin"
+    #import <ObjectiveSugar/ObjectiveSugar.h>
+    #import <AirMenuKit/AirMenuKit.h>
+    #import <XLForm/XLForm.h>
+    #import <UIView+AutoLayout/UIView+AutoLayout.h>
 #endif

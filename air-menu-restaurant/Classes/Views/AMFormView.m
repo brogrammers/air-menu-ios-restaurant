@@ -9,6 +9,8 @@
 #import <JVFloatLabeledTextField/JVFloatLabeledTextField.h>
 #import <UIView+AutoLayout/UIView+AutoLayout.h>
 #import "AMFormView.h"
+#import "AMAppDelegate.h"
+#import "AMFloatingTextField.h"
 
 #pragma mark - Helper category to find first responder
 
@@ -35,35 +37,6 @@
     
     return nil;
 }
-@end
-
-#pragma mark - Simple JVFloatLabeledTextField to fix layout issues
-
-@interface AMFloatingTextField : JVFloatLabeledTextField
-@property (nonatomic, readwrite) NSUInteger index;
-@end
-
-@implementation AMFloatingTextField
--(void)layoutSubviews
-{
-    [super layoutSubviews];
-    [self.floatingLabel sizeToFit];
-    CGRect labelFrame = self.floatingLabel.frame;
-    labelFrame.origin.x = 10;
-    labelFrame.origin.y += 2;
-    self.floatingLabel.frame = labelFrame;
-}
-
-- (CGRect)textRectForBounds:(CGRect)bounds;
-{
-    return CGRectInset([super textRectForBounds:bounds], 10.f, 0.0f);
-}
-
-- (CGRect)editingRectForBounds:(CGRect)bounds;
-{
-    return CGRectInset([super editingRectForBounds:bounds], 10.f, 0.0f);
-}
-
 @end
 
 #pragma mark - Form View Section
@@ -115,8 +88,6 @@
 #pragma mark - Form View Column
 
 @implementation AMFormViewRowColumn
-
-
 
 +(AMFormViewRowColumn *)withName:(NSString *)name
 {
@@ -225,7 +196,6 @@
     [self.contentView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
 }
 
-
 -(void)addNewFields:(NSArray *)fields
 {
     NSUInteger index = 0;
@@ -324,7 +294,67 @@
 -(void)setup
 {
     [self setupTableView];
+    self.bounces = YES;
+    self.showsVerticalScrollIndicator = NO;
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
 }
+
+-(void)keyboardWillShow:(NSNotification *)notification
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIView *tappedView = [self getFirstResponder];
+        
+        if(tappedView)
+        {
+            CGRect keyboardRect = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
+            CGRect convertedRect = [self convertRect:keyboardRect fromView:((AMAppDelegate *)[UIApplication sharedApplication].delegate).window];
+            CGRect intersection = CGRectIntersection(self.bounds, convertedRect);
+            
+            CGRect tappedViewRect = tappedView.frame;
+            CGRect tappedViewRectConverted = [self convertRect:tappedViewRect fromView:tappedView];
+            CGRect tappedViewKeyboardIntersection = CGRectIntersection(tappedViewRectConverted, convertedRect);
+            if (tappedViewKeyboardIntersection.origin.x != INFINITY && tappedViewKeyboardIntersection.origin.y != INFINITY)
+            {
+                [UIView animateWithDuration:[notification.userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue]
+                                      delay:0.0
+                                    options:[notification.userInfo[UIKeyboardAnimationCurveUserInfoKey] intValue]
+                                 animations:^{
+                                     [self setContentOffset:CGPointMake(0, self.contentOffset.y + (fabs(tappedViewRectConverted.origin.y - (convertedRect.size.height - tappedViewRectConverted.size.height - 17)))) animated:YES];
+                                     self.contentInset = UIEdgeInsetsMake(0, 0, intersection.size.height + 2, 0);
+                                 }
+                                 completion:nil];
+
+            }
+            else
+            {
+                self.contentInset = UIEdgeInsetsMake(0, 0, intersection.size.height + 2, 0);
+            }
+            
+            [self setNeedsLayout];
+            [self layoutIfNeeded];
+        }
+    });
+}
+
+-(void)keyboardWillHide:(NSNotification *)notification
+{
+    [UIView animateWithDuration:[notification.userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue]
+                     animations:^{
+                         self.contentInset = UIEdgeInsetsZero;
+                         self.contentOffset = CGPointZero;
+                     }];
+    [self setNeedsLayout];
+    [self layoutIfNeeded];
+}
+
 
 -(void)setupTableView
 {
@@ -337,7 +367,9 @@
     [self.tableView registerClass:[AMFormFieldTableViewCell class] forCellReuseIdentifier:@"field_cell"];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    [tableView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+    [tableView autoCenterInSuperview];
+    [tableView autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self withMultiplier:1.0];
+    [tableView autoMatchDimension:ALDimensionHeight toDimension:ALDimensionHeight ofView:self withMultiplier:1.0];
 }
 
 #pragma mark - Table View Data Source
@@ -389,9 +421,17 @@
     return view;
 }
 
-
--(CGSize)intrinsicContentSize
+-(void)layoutSubviews
 {
-    return self.tableView.contentSize;
+    self.contentSize = self.tableView.contentSize;
+    [super layoutSubviews];
+}
+
+
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+    
 }
 @end

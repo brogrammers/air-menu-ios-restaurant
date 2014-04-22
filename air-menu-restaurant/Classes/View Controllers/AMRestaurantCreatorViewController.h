@@ -8,14 +8,17 @@
 
 #import <UIKit/UIKit.h>
 #import <AirMenuKit/AMClient+Company.h>
+#import "AMFormView.h"
 
 @class AMRestaurantCreatorViewController;
 @protocol AMRestaurantCreatorViewControllerDelegate <NSObject>
--(void)restaurantCreatorViewController:(AMRestaurantCreatorViewController *)controller didCreateCompany:(AMCompany *)company;
+-(void)restaurantCreatorViewController:(AMRestaurantCreatorViewController *)controller didCreateRestaurant:(AMRestaurant *)restaurant;
 @end
 
 @interface AMRestaurantCreatorViewController : UIViewController
 @property (nonatomic, readwrite, weak) id <AMRestaurantCreatorViewControllerDelegate> delegate;
-@property (nonatomic, readwrite, weak) UILabel *titleLabel;
-@property (nonatomic, readwrite, weak) UIButton *button;
+@property (nonatomic, readonly, weak) UILabel *titleLabel;
+@property (nonatomic, readonly, weak) UIButton *button;
+@property (nonatomic, readonly, weak) AMFormView *formView;
+@property (nonatomic, readwrite, strong) AMCompany *company;
 @end

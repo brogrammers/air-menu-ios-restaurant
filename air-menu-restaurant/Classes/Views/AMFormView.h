@@ -51,6 +51,6 @@ typedef NS_ENUM(NSUInteger, AMFormViewRowColumnStyle)
 -(void)didFinishEditing:(AMFormViewRow *)row;
 @end
 
-@interface AMFormView : UIView
+@interface AMFormView : UIScrollView
 -(void)setSections:(NSArray *)sections;
 @end

@@ -13,13 +13,13 @@
 #import "AMFormView.h"
 #import "AMInputValidator.h"
 #import "AMAppDelegate.h"
+#import "AMButton.h"
 
 @interface AMLoginViewContoller()
 @property (nonatomic, readwrite, weak) UIScrollView *scrollView;
 @property (nonatomic, readwrite, weak) UIView *firstPage;
 @property (nonatomic, readwrite, weak) UIView *secondpage;
 @property (nonatomic, readwrite, weak) UIView *pageSeparator;
-@property (nonatomic, readwrite, weak) UIView *buttonSeparator;
 @property (nonatomic, readwrite, weak) AMFormView *formView;
 @property (nonatomic, readwrite, weak) UIImageView *logoImageView;
 @property (nonatomic, readwrite, weak) UIButton *loginButton;
@@ -104,7 +104,6 @@
     [self createLoginForm];
     [self createLoginButton];
     [self createSignupButton];
-    [self createButtonSeparator];
     [self createPageSeparator];
     [self createLogoImageView];
     [self createMessageLabel];
@@ -232,51 +231,26 @@
 
 -(void)createLoginButton
 {
-    UIButton *loginButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    UIButton *loginButton = [AMButton button];
     self.loginButton = loginButton;
     [self.firstPage addSubview:self.loginButton];
     [self.loginButton setTranslatesAutoresizingMaskIntoConstraints:NO];
-    self.loginButton.titleLabel.font = [UIFont fontWithName:MENSCH_THIN size:30];
-    [self.loginButton setTitleColor:[UIColor colorWithRed:1.0f/255.0f green:57.0f/255.0f blue:83.0f/255.0f alpha:1.0] forState:UIControlStateNormal];
     [self.loginButton setTitle:@"login" forState:UIControlStateNormal];
-    [self.loginButton setTitleShadowColor:[[UIColor blackColor] colorWithAlphaComponent:0.5] forState:UIControlStateNormal];
     [@[self.loginButton, self.formView] autoAlignViewsToEdge:ALEdgeLeading];
     [self.loginButton autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:self.firstPage withOffset:-35];
     [self.loginButton addTarget:self action:@selector(didPressLogin:) forControlEvents:UIControlEventTouchUpInside];
-    self.loginButton.layer.shadowColor = [[UIColor blackColor] colorWithAlphaComponent:0.75].CGColor;
-    self.loginButton.layer.shadowOpacity = 1.0;
-    self.loginButton.layer.shadowRadius = 2;
-    self.loginButton.layer.shadowOffset = CGSizeMake(0.0f,2.0f);
 }
 
 -(void)createSignupButton
 {
-    UIButton *loginButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    UIButton *loginButton = [AMButton button];
     self.signupButton = loginButton;
     [self.signupButton setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.firstPage addSubview:self.signupButton];
-    self.signupButton.titleLabel.font = [UIFont fontWithName:MENSCH_THIN size:30];
-    [self.signupButton setTitleColor:[UIColor colorWithRed:1.0f/255.0f green:57.0f/255.0f blue:83.0f/255.0f alpha:1.0] forState:UIControlStateNormal];
     [self.signupButton setTitle:@"signup" forState:UIControlStateNormal];
     [self.signupButton autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:self.firstPage withOffset:-35];
     [@[self.signupButton, self.formView] autoAlignViewsToEdge:ALEdgeTrailing];
     [self.signupButton addTarget:self action:@selector(didPressSignup:) forControlEvents:UIControlEventTouchUpInside];
-    self.signupButton.layer.shadowColor = [[UIColor blackColor] colorWithAlphaComponent:0.75].CGColor;
-    self.signupButton.layer.shadowOpacity = 1.0;
-    self.signupButton.layer.shadowRadius = 2;
-    self.signupButton.layer.shadowOffset = CGSizeMake(0.0f,2.0f);
-}
-
--(void)createButtonSeparator
-{
-    UIView *separator = [UIView newAutoLayoutView];
-    self.buttonSeparator = separator;
-    [self.firstPage addSubview:self.buttonSeparator];
-    self.buttonSeparator.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.1];
-    [self.buttonSeparator autoMatchDimension:ALDimensionHeight toDimension:ALDimensionHeight ofView:self.loginButton];
-    [self.buttonSeparator autoSetDimension:ALDimensionWidth toSize:1.0f];
-    [self.buttonSeparator autoAlignAxisToSuperviewAxis:ALAxisVertical];
-    [self.buttonSeparator autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:self.firstPage withOffset:-35];
 }
 
 -(void)createPageSeparator
@@ -321,11 +295,10 @@
         [container autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.formView];
         [container autoPinEdge:ALEdgeLeading toEdge:ALEdgeLeading ofView:self.firstPage];
         [container autoPinEdge:ALEdgeTrailing toEdge:ALEdgeTrailing ofView:self.firstPage];
-        [container autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.buttonSeparator];
-        self.messageLabel.font = [UIFont fontWithName:GOTHAM_LIGHT size:15];
+        [container autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:self.loginButton];
+        self.messageLabel.font = [UIFont fontWithName:GOTHAM_LIGHT size:18];
         [container addSubview:messageLabel];
         [self.messageLabel autoCenterInSuperview];
-        
     }
 }
 
@@ -348,7 +321,7 @@
                                              clientSecret:@"541b2f36d19a717077195286212aa1e1cea63faea4cfa22963475512704a2684"
                                                  username:self.username.userInput
                                                  password:self.password.userInput
-                                                   scopes:AMOAuthScopeUser
+                                                   scopes:AMOAuthScopeUser | AMOAuthScopeOwner
                                                completion:^(AMOAuthToken *token, NSError *error) {
                                                    if(!error)
                                                    {
