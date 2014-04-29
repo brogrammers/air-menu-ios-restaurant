@@ -114,4 +114,13 @@
         self.rowDescriptor.value = location;
     }
 }
+
+-(void)setRowDescriptor:(XLFormRowDescriptor *)rowDescriptor
+{
+    [super setRowDescriptor:rowDescriptor];
+    MKPointAnnotation *annototation = [[MKPointAnnotation alloc] init];
+    annototation.coordinate = [[rowDescriptor value] coordinate] ;
+    [self.mapView addAnnotation:annototation];
+    self.annotation = annototation;
+}
 @end

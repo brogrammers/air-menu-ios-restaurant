@@ -12,6 +12,7 @@
 #import "UILabel+AttributesCopy.h"
 #import "AMFormMapCell.h"
 #import "AMButton.h"
+#import "AMFormSwitchCell.h"
 
 @interface AMFormViewController () <UIGestureRecognizerDelegate>
 @property (nonatomic, strong) FormAction action;
@@ -83,7 +84,8 @@ deleteButtonCaption:(NSString *)deleteButtonCaption
                                                    XLFormRowDescriptorTypePassword: [AMFormTextFieldCell class],
                                                    XLFormRowDescriptorTypeNumber: [AMFormTextFieldCell class],
                                                    XLFormRowDescriptorTypeInteger: [AMFormTextFieldCell class],
-                                                   @"AMFormRowDescriptorTypeMap" : [AMFormMapCell class]
+                                                   @"AMFormRowDescriptorTypeMap" : [AMFormMapCell class],
+                                                   XLFormRowDescriptorTypeBooleanCheck : [AMFormSwitchCell class]
                                                    } mutableCopy];
         self.tableView.separatorColor = [UIColor clearColor];
         self.view.backgroundColor = [UIColor clearColor];
@@ -202,6 +204,54 @@ deleteButtonCaption:(NSString *)deleteButtonCaption
                                                                    showSaveButton:YES
                                                                  showDeleteButton:NO
                                                               deleteButtonCaption:@"remove"
+                                                                       tableStyle:UITableViewStyleGrouped];
+    return controller;
+}
+
++(AMFormViewController *)restaurantUpdateViewController:(AMRestaurant *)restaurant
+{
+    AMFormViewController *controller = [self restaurantInputViewController];
+    XLFormDescriptor *form = controller.form;
+    [controller setTitle:@"Update Restaurant"];
+    [[form formRowWithTag:@"name"] setValue:restaurant.name];
+    [[form formRowWithTag:@"address line 1"] setValue:restaurant.address.addressLine1];
+    [[form formRowWithTag:@"address line 2"] setValue:restaurant.address.addressLine2];
+    [[form formRowWithTag:@"city"] setValue:restaurant.address.city];
+    [[form formRowWithTag:@"county"] setValue:restaurant.address.country];
+    [[form formRowWithTag:@"state"] setValue:@"N/A"];
+    [[form formRowWithTag:@"country"] setValue:restaurant.address.country];
+    [[form formRowWithTag:@"description"] setValue:@"Great food every day!"];
+    [[form formRowWithTag:@"map"] setValue:restaurant.location];
+    [[form formRowWithTag:@"kind"] setValue:@"Portuguese"];
+    return controller;
+}
+
++(AMFormViewController *)staffKindCreateViewController
+{
+    XLFormDescriptor *staffKindForm = [XLFormDescriptor formDescriptorWithTitle:@"New staff kind"];
+    XLFormSectionDescriptor *section = [XLFormSectionDescriptor formSectionWithTitle:@"About staff kind"];
+    [@[@"name", @"handles orders ?", @"handles order items ?"] each:^(NSString *title) {
+        XLFormRowDescriptor *row;
+        if ([title characterAtIndex:title.length - 1] == '?')
+        {
+            row = [XLFormRowDescriptor formRowDescriptorWithTag:title rowType:XLFormRowDescriptorTypeBooleanCheck title:title];
+        }
+        else
+        {
+            row = [XLFormRowDescriptor formRowDescriptorWithTag:title rowType:XLFormRowDescriptorTypeText title:title];
+        }
+        
+        row.required = YES;
+        [section addFormRow:row];
+    }];
+    
+    [staffKindForm addFormSection:section];
+    AMFormViewController *controller = [[AMFormViewController alloc] initWithForm:staffKindForm
+                                                                         formMode:XLFormModeCreate
+                                                                 showCancelButton:YES
+                                                                   showSaveButton:YES
+                                                                 showDeleteButton:NO
+                                                              deleteButtonCaption:@""
                                                                        tableStyle:UITableViewStyleGrouped];
     return controller;
 }

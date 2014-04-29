@@ -7,11 +7,14 @@
 //
 
 #import "AMMenuViewController.h"
+#import "AMHeaderCellWithAdd.h"
+#import "UILabel+AttributesCopy.h"
+#import "AMCollectionView.h"
 
-@interface AMMenuViewController ()
-
+@interface AMMenuViewController () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 @end
 
 @implementation AMMenuViewController
+
 
 @end

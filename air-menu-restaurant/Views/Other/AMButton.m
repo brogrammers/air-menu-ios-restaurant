@@ -9,6 +9,10 @@
 #import "AMButton.h"
 #import <UIView+AutoLayout/UIView+AutoLayout.h>
 
+@interface AMButton()
+@property (nonatomic, readwrite) BOOL hasSetConstraints;
+@end
+
 @implementation AMButton
 + (AMButton *)button
 {
@@ -45,15 +49,20 @@
 -(void)updateConstraints
 {
     [super updateConstraints];
-    [UIView autoSetPriority:UILayoutPriorityDefaultHigh
-             forConstraints:^{
-                 [self autoSetContentCompressionResistancePriorityForAxis:ALAxisHorizontal];
-             }];
-    
-    [UIView autoSetPriority:UILayoutPriorityDefaultLow
-             forConstraints:^{
-                 [self autoSetContentHuggingPriorityForAxis:ALAxisHorizontal];
-             }];
+    if(!self.hasSetConstraints)
+    {
+//        [UIView autoSetPriority:UILayoutPriorityDefaultHigh
+//                 forConstraints:^{
+//                     [self autoSetContentCompressionResistancePriorityForAxis:ALAxisHorizontal];
+//                 }];
+//        
+//        [UIView autoSetPriority:UILayoutPriorityDefaultLow
+//                 forConstraints:^{
+//                     [self autoSetContentHuggingPriorityForAxis:ALAxisHorizontal];
+//                 }];
+        
+        self.hasSetConstraints = YES;
+    }
 }
 
 -(void)setFontSize:(CGFloat)fontSize

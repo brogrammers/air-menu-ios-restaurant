@@ -14,4 +14,5 @@
 @property (nonatomic, weak, readonly) UILabel *subtitleLabel;
 @property (nonatomic, readwrite, strong) NSIndexPath *indexPath;
 @property (nonatomic, copy) void (^tapBlock)(NSIndexPath *indexPath);
+-(void)restoreState;
 @end

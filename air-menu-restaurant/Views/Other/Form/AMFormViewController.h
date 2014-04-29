@@ -12,5 +12,7 @@ typedef void (^FormAction)();
 
 @interface AMFormViewController : XLFormViewController
 +(AMFormViewController *)restaurantInputViewController;
++(AMFormViewController *)restaurantUpdateViewController:(AMRestaurant *)restaurant;
++(AMFormViewController *)staffKindCreateViewController;
 -(void)setAction:(FormAction)action forTitle:(NSString *)title;
 @end

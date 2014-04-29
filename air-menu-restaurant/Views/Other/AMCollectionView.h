@@ -11,4 +11,5 @@
 @interface AMCollectionView : UICollectionView
 @property (nonatomic, copy) void (^refreshBlock)();
 -(void)didEndRefreshing;
+@property (nonatomic, readwrite, weak) UIView *headerView;
 @end

@@ -8,6 +8,8 @@
 
 #import "AMOwnerNavigationController.h"
 #import "AMCompanyViewController.h"
+#import "AMNavigationViewController.h"
+#import "AMInitialViewController.h"
 
 @implementation AMOwnerNavigationController
 
@@ -25,13 +27,15 @@
 -(void)viewDidLoad
 {
     [super viewDidLoad];
-    AMCompanyViewController *viewController = [[AMCompanyViewController alloc] initWithScopes:self.scopes user:self.user];
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+    AMCompanyViewController *viewController = [[AMCompanyViewController alloc] initWithScopes:self.scopes user:self.user navigationController:self];
+    viewController.controller = self;
+    UINavigationController *navigationController = [[AMNavigationViewController alloc] initWithRootViewController:viewController];
     [navigationController setNavigationBarHidden:YES];
     navigationController.interactivePopGestureRecognizer.delegate = navigationController.viewControllers.lastObject;
     [self addStylersFromArray:@[[MSDynamicsDrawerShadowStyler styler], [MSDynamicsDrawerResizeStyler styler], [MSDynamicsDrawerScaleStyler styler], [MSDynamicsDrawerFadeStyler styler]] forDirection:MSDynamicsDrawerDirectionLeft];
     [self setDrawerViewController:navigationController forDirection:MSDynamicsDrawerDirectionLeft];
     [self setRevealWidth:310 forDirection:MSDynamicsDrawerDirectionLeft];
+    [self setPaneViewController:[[AMInitialViewController alloc] init] animated:NO completion:nil];
 }
 
 @end

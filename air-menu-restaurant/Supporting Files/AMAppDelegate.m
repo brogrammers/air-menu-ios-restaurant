@@ -22,10 +22,16 @@
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeAlert|
                                                                            UIRemoteNotificationTypeBadge|
                                                                            UIRemoteNotificationTypeSound)];
+//    [[UIImageView appearanceWhenContainedIn:[UINavigationController class], nil] setAlpha:0.0f];
     UIWindow* window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.window = window;
     self.window.layer.contents = (id) [UIImage imageNamed:@"background_ipad"].CGImage;
 
+    [[AMClient sharedClient] registerHadnler:^{
+        [self didLogout];
+        [self loginWithUserName:@"rob" password:@"password123"];
+    } forErrorCode:@"401"];
+    
     if([[AMClient sharedClient] isLoggedIn])
     {
         [self didLogin];
@@ -88,9 +94,22 @@
                      completion:nil];
 }
 
+-(void)animateApplicationDisapperiance
+{
+    [UIView animateWithDuration:0.5
+                          delay:0.0
+                        options:UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+                         self.window.rootViewController.view.alpha = 0.0;
+                     }
+                     completion:^(BOOL finished) {
+                         self.window.rootViewController = nil;
+                     }];
+}
+
 -(void)didLogout
 {
-    
+    [self animateApplicationDisapperiance];
 }
 
 @end

@@ -115,4 +115,9 @@
     }
 }
 
+-(void)restoreState
+{
+    self.backgroundColor = [UIColor clearColor];
+    [[self valueForKey:@"rightImageView"] setAlpha:0.0];
+}
 @end

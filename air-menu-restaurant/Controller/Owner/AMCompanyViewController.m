@@ -20,7 +20,7 @@
 #import "CRToastManager+AMNotification.h"
 #import "UIImage+TextDrawing.h"
 
-@interface AMCompanyViewController () <UINavigationControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UIAlertViewDelegate>
+@interface AMCompanyViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UIAlertViewDelegate>
 @property (nonatomic, readwrite, strong) NSMutableArray *restaurants;
 @property (nonatomic, readwrite, strong) AMCompany *company;
 @property (nonatomic, readwrite, strong) AMRestaurantViewPickerViewController *pickerViewController;
@@ -29,11 +29,12 @@
 
 @implementation AMCompanyViewController
 
--(id)initWithScopes:(NSArray *)scopes user:(AMUser *)user
+-(id)initWithScopes:(NSArray *)scopes user:(AMUser *)user navigationController:(AMOwnerNavigationController *)controller
 {
     self = [super initWithScopes:scopes user:user];
     if(self)
     {
+        self.controller = controller;
         [self fetchData];
         [self setup];
     }
@@ -94,6 +95,7 @@
     self.view.backgroundColor = [UIColor clearColor];
     [self.collectionView registerClass:[AMRestaurantCell class] forCellWithReuseIdentifier:@"restaurant_cell"];
     self.pickerViewController = [[AMRestaurantViewPickerViewController alloc] initWithScopes:self.scopes user:self.user];
+    self.pickerViewController.controller = self.controller;
     [self.collectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"header"];
     [self.collectionView registerClass:[AMHeaderCellWithAdd class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"add_company_header"];
     self.collectionView.bounces = YES;
@@ -104,6 +106,7 @@
     [super viewWillAppear:animated];
     [self.collectionView.collectionViewLayout invalidateLayout];
 }
+
 
 #pragma mark - Gesture Recogniser Delegate
 
@@ -127,7 +130,6 @@
     cell.indexPath = indexPath;
     cell.subtitleLabel.text = [NSString stringWithFormat:@"%@, %@, %@", restaurant.address.addressLine1, restaurant.address.addressLine2, restaurant.address.city];
     cell.tapBlock = ^(NSIndexPath *indexPath){
-        self.navigationController.delegate = self; 
         [self.navigationController pushViewController:self.pickerViewController animated:YES];
     };
     cell.leftBlock = ^{
@@ -135,20 +137,14 @@
         altertView.objectOfConcern = restaurant;
         [altertView show];
     };
-    
-    cell.leftImage = [UIImage drawText:@"" inImageWithSize:CGSizeMake(30, 30) atPoint:CGPointZero withFont:[UIFont fontWithName:ICON_FONT size:30.0f]];
-    cell.rightImage = [UIImage drawText:@"" inImageWithSize:CGSizeMake(30, 30) atPoint:CGPointZero withFont:[UIFont fontWithName:ICON_FONT size:30.0f]];
-    
+    __weak AMRestaurantCell *weakCell = cell;
     cell.rightBlock = ^{
+        [weakCell restoreState];
         [self updateRestaurant:restaurant];
     };
+    cell.leftImage = [UIImage drawText:@"" inImageWithSize:CGSizeMake(30, 30) atPoint:CGPointZero withFont:[UIFont fontWithName:ICON_FONT size:30.0f]];
+    cell.rightImage = [UIImage drawText:@"" inImageWithSize:CGSizeMake(30, 30) atPoint:CGPointZero withFont:[UIFont fontWithName:ICON_FONT size:30.0f]];
     return cell;
-}
-
--(void)updateRestaurant:(AMRestaurant *)restaurant
-{
-    self.navigationController.delegate = self;
-    [self.navigationController pushViewController:[self restaurantUpdateInputViewController:restaurant] animated:YES];
 }
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
@@ -156,52 +152,100 @@
     AMHeaderCellWithAdd *header = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"add_company_header" forIndexPath:indexPath];
     [header.titleLabel setTextWithExistingAttributes:@"Restaurants"];
     header.tapBlock = ^{
-        self.navigationController.delegate = self;
-        [self.navigationController pushViewController:[self restaurantInputViewController] animated:YES];
+        [self.navigationController pushViewController:[self restaurantCreateViewController] animated:YES];
     };
     return header;
 }
 
--(UIViewController *)restaurantUpdateInputViewController:(AMRestaurant *)restaurant
+-(void)updateRestaurant:(AMRestaurant *)restaurant
 {
-    return [[UIViewController alloc] init];
+    [self.navigationController pushViewController:[self restaurantUpdateViewController:restaurant] animated:YES];
 }
 
--(UIViewController *)restaurantInputViewController
+-(UIViewController *)restaurantUpdateViewController:(AMRestaurant *)restaurant
 {
-    AMFormViewController *controller = [AMFormViewController restaurantInputViewController];
-    __weak AMFormViewController *_controller = controller;
-    [controller setAction:^{
-        CLLocation *region = [[_controller.form formRowWithTag:@"map"] value];
+    AMFormViewController *restaurantUpdateViewController =  [AMFormViewController restaurantUpdateViewController:restaurant];
+    __weak AMFormViewController *weakUpdateController = restaurantUpdateViewController;
+    [weakUpdateController setAction:^{
+        XLFormDescriptor *form = weakUpdateController.form;
+        [[AMClient sharedClient] updateRestaurant:restaurant
+                                      withNewName:[[form formRowWithTag:@"name"] value]
+                                   newDescription:[[form formRowWithTag:@"description"] value]
+                                newAddressLineOne:[[form formRowWithTag:@"address line 1"] value]
+                                newAddressLineTwo:[[form formRowWithTag:@"address line 2"] value]
+                                          newCity:[[form formRowWithTag:@"city"] value]
+                                        newCounty:[[form formRowWithTag:@"county"] value]
+                                         newState:[[form formRowWithTag:@"state"] value]
+                                       newCountry:[[form formRowWithTag:@"country"] value]
+                                      newLatitude:[[[form formRowWithTag:@"map"] value] coordinate].latitude
+                                     newLongitude:[[[form formRowWithTag:@"map"] value] coordinate].longitude
+                                    newCompletion:^(AMRestaurant *newRestaurant, NSError *error) {
+                                        if(error)
+                                        {
+                                            [CRToastManager showErrorWithMessage:[error localizedDescription]];
+                                            return;
+                                        }
+                                        
+                                        [weakUpdateController.navigationController popViewControllerAnimated:YES];
+                                        [self insertNewRestaurant:newRestaurant forOldRestaurant:restaurant];
+                                    }];
+    } forTitle:@"update"];
+    
+    return restaurantUpdateViewController;
+}
+
+-(void)insertNewRestaurant:(AMRestaurant *)restaurant forOldRestaurant:(AMRestaurant *)oldRestaurant
+{
+    [self.collectionView performBatchUpdates:^{
+        NSUInteger index = [self.restaurants indexOfObject:oldRestaurant];
+        if(index != NSNotFound)
+        {
+            [self.restaurants replaceObjectAtIndex:index withObject:restaurant];
+            [self.collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:index inSection:0]]];
+        }
+    } completion:nil];
+}
+
+-(UIViewController *)restaurantCreateViewController
+{
+    AMFormViewController *restaurantCreateViewController = [AMFormViewController restaurantInputViewController];
+    __weak AMFormViewController *weakCreateController = restaurantCreateViewController;
+    [weakCreateController setAction:^{
+        XLFormDescriptor *form = weakCreateController.form;
         [[AMClient sharedClient] createRestaurantOfCompany:self.user.company
-                                                  withName:[[_controller.form formRowWithTag:@"name"] value]
+                                                  withName:[[form formRowWithTag:@"name"] value]
+                                               description:[[form formRowWithTag:@"description"] value]
                                                    loyalty:YES
                                                remoteOrder:YES
                                             conversionRate:@2.5
-                                            addressLineOne:[[_controller.form formRowWithTag:@"address line 1"] value]
-                                            addressLineTwo:[[_controller.form formRowWithTag:@"address line 2"] value]
-                                                      city:[[_controller.form formRowWithTag:@"city"] value]
-                                                    county:[[_controller.form formRowWithTag:@"county"] value]
-                                                     state:[[_controller.form formRowWithTag:@"state"] value]
-                                                   country:[[_controller.form formRowWithTag:@"country"] value]
-                                                  latitude:region.coordinate.latitude
-                                                 longitude:region.coordinate.longitude
+                                            addressLineOne:[[form formRowWithTag:@"address line 1"] value]
+                                            addressLineTwo:[[form formRowWithTag:@"address line 2"] value]
+                                                      city:[[form formRowWithTag:@"city"] value]
+                                                    county:[[form formRowWithTag:@"county"] value]
+                                                     state:[[form formRowWithTag:@"state"] value]
+                                                   country:[[form formRowWithTag:@"country"] value]
+                                                  latitude:[[[form formRowWithTag:@"map"] value] coordinate].latitude
+                                                 longitude:[[[form formRowWithTag:@"map"] value] coordinate].longitude
                                                 completion:^(AMRestaurant *restaurant, NSError *error) {
-                                                    if(!error)
-                                                    {
-                                                        [_controller.navigationController popViewControllerAnimated:YES];
-                                                        [self.collectionView performBatchUpdates:^{
-                                                            [self.restaurants addObject:restaurant];
-                                                            [self.collectionView insertItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:self.restaurants.count - 1 inSection:1]]];
-                                                        } completion:nil];
-                                                    }
-                                                    else
+                                                    if(error)
                                                     {
                                                         [CRToastManager showErrorWithMessage:[error localizedDescription]];
+                                                        return;
                                                     }
+                                                    
+                                                    [weakCreateController.navigationController popViewControllerAnimated:YES];
+                                                    [self insertNewRestaurant:restaurant];
                                                 }];
     } forTitle:@"create"];
-    return controller;
+    return restaurantCreateViewController;
+}
+
+-(void)insertNewRestaurant:(AMRestaurant *)restaurant
+{
+    [self.collectionView performBatchUpdates:^{
+        [self.restaurants addObject:restaurant];
+        [self.collectionView insertItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:self.restaurants.count - 1 inSection:0]]];
+    } completion:nil];
 }
 
 #pragma mark - Collection View Delegate
@@ -219,22 +263,6 @@
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section;
 {
     return UIEdgeInsetsZero;
-}
-
-#pragma mark - Navigation Controller Delegate
-
--(void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
-{
-    [self.navigationController.transitionCoordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
-        if(viewController == self)
-        {
-            self.view.alpha = 1.0;
-        }
-        else
-        {
-            self.view.alpha = 0.0;
-        }
-    } completion:nil];
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
@@ -261,7 +289,7 @@
                 {
                     [self.collectionView performBatchUpdates:^{
                         [self.restaurants removeObjectAtIndex:index];
-                        [self.collectionView deleteItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:index inSection:1]]];
+                        [self.collectionView deleteItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:index inSection:0]]];
                     } completion:nil];
                 }
             }

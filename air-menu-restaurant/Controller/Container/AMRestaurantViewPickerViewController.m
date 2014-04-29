@@ -44,7 +44,7 @@
        [self.scopes containsObject:@(AMOAuthScopeGetStaffMembers)] ||
        self.user.type == AMUserTypeOwner)
     {
-        [controllers addObject:[[AMPeopleViewController alloc] initWithScopes:self.scopes user:self.user]];
+        [controllers addObject:[[AMPeopleViewController alloc] initWithScopes:self.scopes user:self.user restaurant:nil]];
         [names addObject:@"PEOPLE"];
         [icons addObject:@""];
     }

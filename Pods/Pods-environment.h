@@ -84,77 +84,95 @@
 #define COCOAPODS_VERSION_MINOR_JVFloatLabeledTextField 0
 #define COCOAPODS_VERSION_PATCH_JVFloatLabeledTextField 7
 
+// LXReorderableCollectionViewFlowLayout
+#define COCOAPODS_POD_AVAILABLE_LXReorderableCollectionViewFlowLayout
+#define COCOAPODS_VERSION_MAJOR_LXReorderableCollectionViewFlowLayout 0
+#define COCOAPODS_VERSION_MINOR_LXReorderableCollectionViewFlowLayout 1
+#define COCOAPODS_VERSION_PATCH_LXReorderableCollectionViewFlowLayout 1
+
 // MRProgress
 #define COCOAPODS_POD_AVAILABLE_MRProgress
 #define COCOAPODS_VERSION_MAJOR_MRProgress 0
 #define COCOAPODS_VERSION_MINOR_MRProgress 4
-#define COCOAPODS_VERSION_PATCH_MRProgress 1
+#define COCOAPODS_VERSION_PATCH_MRProgress 3
 
 // MRProgress/ActivityIndicator
 #define COCOAPODS_POD_AVAILABLE_MRProgress_ActivityIndicator
 #define COCOAPODS_VERSION_MAJOR_MRProgress_ActivityIndicator 0
 #define COCOAPODS_VERSION_MINOR_MRProgress_ActivityIndicator 4
-#define COCOAPODS_VERSION_PATCH_MRProgress_ActivityIndicator 1
+#define COCOAPODS_VERSION_PATCH_MRProgress_ActivityIndicator 3
 
 // MRProgress/Blur
 #define COCOAPODS_POD_AVAILABLE_MRProgress_Blur
 #define COCOAPODS_VERSION_MAJOR_MRProgress_Blur 0
 #define COCOAPODS_VERSION_MINOR_MRProgress_Blur 4
-#define COCOAPODS_VERSION_PATCH_MRProgress_Blur 1
+#define COCOAPODS_VERSION_PATCH_MRProgress_Blur 3
 
 // MRProgress/Circular
 #define COCOAPODS_POD_AVAILABLE_MRProgress_Circular
 #define COCOAPODS_VERSION_MAJOR_MRProgress_Circular 0
 #define COCOAPODS_VERSION_MINOR_MRProgress_Circular 4
-#define COCOAPODS_VERSION_PATCH_MRProgress_Circular 1
+#define COCOAPODS_VERSION_PATCH_MRProgress_Circular 3
 
 // MRProgress/Helper
 #define COCOAPODS_POD_AVAILABLE_MRProgress_Helper
 #define COCOAPODS_VERSION_MAJOR_MRProgress_Helper 0
 #define COCOAPODS_VERSION_MINOR_MRProgress_Helper 4
-#define COCOAPODS_VERSION_PATCH_MRProgress_Helper 1
+#define COCOAPODS_VERSION_PATCH_MRProgress_Helper 3
 
 // MRProgress/Icons
 #define COCOAPODS_POD_AVAILABLE_MRProgress_Icons
 #define COCOAPODS_VERSION_MAJOR_MRProgress_Icons 0
 #define COCOAPODS_VERSION_MINOR_MRProgress_Icons 4
-#define COCOAPODS_VERSION_PATCH_MRProgress_Icons 1
+#define COCOAPODS_VERSION_PATCH_MRProgress_Icons 3
 
 // MRProgress/MessageInterceptor
 #define COCOAPODS_POD_AVAILABLE_MRProgress_MessageInterceptor
 #define COCOAPODS_VERSION_MAJOR_MRProgress_MessageInterceptor 0
 #define COCOAPODS_VERSION_MINOR_MRProgress_MessageInterceptor 4
-#define COCOAPODS_VERSION_PATCH_MRProgress_MessageInterceptor 1
+#define COCOAPODS_VERSION_PATCH_MRProgress_MessageInterceptor 3
 
 // MRProgress/NavigationBarProgress
 #define COCOAPODS_POD_AVAILABLE_MRProgress_NavigationBarProgress
 #define COCOAPODS_VERSION_MAJOR_MRProgress_NavigationBarProgress 0
 #define COCOAPODS_VERSION_MINOR_MRProgress_NavigationBarProgress 4
-#define COCOAPODS_VERSION_PATCH_MRProgress_NavigationBarProgress 1
+#define COCOAPODS_VERSION_PATCH_MRProgress_NavigationBarProgress 3
 
 // MRProgress/Overlay
 #define COCOAPODS_POD_AVAILABLE_MRProgress_Overlay
 #define COCOAPODS_VERSION_MAJOR_MRProgress_Overlay 0
 #define COCOAPODS_VERSION_MINOR_MRProgress_Overlay 4
-#define COCOAPODS_VERSION_PATCH_MRProgress_Overlay 1
+#define COCOAPODS_VERSION_PATCH_MRProgress_Overlay 3
 
 // MRProgress/Stopable
 #define COCOAPODS_POD_AVAILABLE_MRProgress_Stopable
 #define COCOAPODS_VERSION_MAJOR_MRProgress_Stopable 0
 #define COCOAPODS_VERSION_MINOR_MRProgress_Stopable 4
-#define COCOAPODS_VERSION_PATCH_MRProgress_Stopable 1
+#define COCOAPODS_VERSION_PATCH_MRProgress_Stopable 3
 
 // MRProgress/WeakProxy
 #define COCOAPODS_POD_AVAILABLE_MRProgress_WeakProxy
 #define COCOAPODS_VERSION_MAJOR_MRProgress_WeakProxy 0
 #define COCOAPODS_VERSION_MINOR_MRProgress_WeakProxy 4
-#define COCOAPODS_VERSION_PATCH_MRProgress_WeakProxy 1
+#define COCOAPODS_VERSION_PATCH_MRProgress_WeakProxy 3
 
 // MSDynamicsDrawerViewController
 #define COCOAPODS_POD_AVAILABLE_MSDynamicsDrawerViewController
 #define COCOAPODS_VERSION_MAJOR_MSDynamicsDrawerViewController 1
 #define COCOAPODS_VERSION_MINOR_MSDynamicsDrawerViewController 5
 #define COCOAPODS_VERSION_PATCH_MSDynamicsDrawerViewController 1
+
+// MZAppearance
+#define COCOAPODS_POD_AVAILABLE_MZAppearance
+#define COCOAPODS_VERSION_MAJOR_MZAppearance 1
+#define COCOAPODS_VERSION_MINOR_MZAppearance 1
+#define COCOAPODS_VERSION_PATCH_MZAppearance 2
+
+// MZFormSheetController
+#define COCOAPODS_POD_AVAILABLE_MZFormSheetController
+#define COCOAPODS_VERSION_MAJOR_MZFormSheetController 2
+#define COCOAPODS_VERSION_MINOR_MZFormSheetController 3
+#define COCOAPODS_VERSION_PATCH_MZFormSheetController 4
 
 // Mantle
 #define COCOAPODS_POD_AVAILABLE_Mantle

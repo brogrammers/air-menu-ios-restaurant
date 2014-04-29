@@ -42,7 +42,12 @@
     self.titleLabel.attributes = @{NSFontAttributeName : [UIFont fontWithName:GOTHAM_BOOK size:25],
                                    NSForegroundColorAttributeName : [UIColor whiteColor],
                                    NSKernAttributeName : @1.0};
-    [self.titleLabel autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.contentView];
+    [self.titleLabel autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.contentView].priority = 1;
+    //[self.titleLabel autoPinEdge:ALEdgeLeading toEdge:ALEdgeLeading ofView:self.contentView withOffset:20.0].priority = 750;
+    [self.titleLabel setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+    [self.titleLabel setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
+    label.textAlignment = NSTextAlignmentCenter;
+    [self.titleLabel autoAlignAxis:ALAxisVertical toSameAxisOfView:self.contentView].priority = 500;
 }
 
 -(void)setupButton
@@ -55,9 +60,11 @@
     [self.addButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.contentView];
     [self.addButton setTitle:@"add" forState:UIControlStateNormal];
     button.tintColor = [UIColor whiteColor];
-    [self.titleLabel autoPinEdge:ALEdgeTrailing toEdge:ALEdgeLeading ofView:self.addButton withOffset:-20.0f];
+    [self.titleLabel autoPinEdge:ALEdgeTrailing toEdge:ALEdgeLeading ofView:self.addButton withOffset:-20.0f].priority = 750;
     button.fontSize = 15.0;
     [button addTarget:self action:@selector(didTap:) forControlEvents:UIControlEventTouchUpInside];
+    [button setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
+    [button setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
 }
 
 -(void)didTap:(UIButton *)buttom

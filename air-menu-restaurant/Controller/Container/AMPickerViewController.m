@@ -66,7 +66,7 @@
 
 #define ROW_HEIGHT 80.0f
 
-@interface AMPickerViewController() <UITableViewDataSource, UITableViewDelegate>
+@interface AMPickerViewController() <UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate>
 @property (nonatomic, readwrite, strong) NSDictionary *managedViewControllersClasses;
 @property (nonatomic, readwrite, weak) UITableView *tableView;
 @end
@@ -146,13 +146,20 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UIViewController *viewController = self.controllers[indexPath.row];
-    if(self.controller.paneState == MSDynamicsDrawerPaneStateOpen)
+    if(viewController != self.controller.paneViewController)
     {
-        [self.controller setPaneViewController:viewController animated:YES completion:nil];
+        if(self.controller.paneState == MSDynamicsDrawerPaneStateOpen)
+        {
+            [self.controller setPaneViewController:viewController animated:YES completion:nil];
+        }
+        else
+        {
+            [self.controller setPaneViewController:viewController animated:NO completion:nil];
+        }
     }
     else
     {
-        [self.controller setPaneViewController:viewController animated:NO completion:nil];
+        [self.controller setPaneState:MSDynamicsDrawerPaneStateClosed animated:YES allowUserInterruption:YES completion:nil];
     }
 }
 

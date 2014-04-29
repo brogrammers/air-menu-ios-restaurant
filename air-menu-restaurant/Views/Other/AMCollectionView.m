@@ -57,4 +57,25 @@
     [super didAddSubview:subview];
     [self sendSubviewToBack:self.refresh];
 }
+
+-(void)setHeaderView:(UIView *)headerView
+{
+    [_headerView removeFromSuperview];
+    _headerView = headerView;
+    [self addSubview:headerView];
+    [self setNeedsDisplay];
+}
+
+-(void)setContentInset:(UIEdgeInsets)contentInset
+{
+    UIEdgeInsets insets =  UIEdgeInsetsMake(contentInset.top + self.headerView.bounds.size.height, contentInset.left, contentInset.bottom, contentInset.right);
+    [super setContentInset:insets];
+}
+
+-(void)layoutSubviews
+{
+    self.headerView.frame = CGRectMake(0, 0, self.bounds.size.width, self.headerView.bounds.size.height);
+    self.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+    [super layoutSubviews];
+}
 @end

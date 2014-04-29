@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "AMScopeDrivenViewController.h"
+#import "AMRestaurantDrivenViewController.h"
 
-@interface AMDevicesViewController : AMScopeDrivenViewController
+@interface AMDevicesViewController : AMRestaurantDrivenViewController
 
 @end

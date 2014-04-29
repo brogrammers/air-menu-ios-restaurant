@@ -9,6 +9,9 @@
 #import <UIKit/UIKit.h>
 #import <AirMenuKit/AirMenuKit.h>
 #import "AMScopeDrivenViewController.h"
+#import "AMOwnerNavigationController.h"
 
 @interface AMCompanyViewController : AMScopeDrivenViewController
+@property (nonatomic, readwrite, weak) AMOwnerNavigationController *controller;
+-(id)initWithScopes:(NSArray *)scopes user:(AMUser *)user navigationController:(AMOwnerNavigationController *)controller;
 @end

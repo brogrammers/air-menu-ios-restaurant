@@ -8,6 +8,7 @@
 
 #import "AMStaffMemberNavigationController.h"
 #import "AMRestaurantViewPickerViewController.h"
+#import "AMNavigationViewController.h"
 
 @implementation AMStaffMemberNavigationController
 
