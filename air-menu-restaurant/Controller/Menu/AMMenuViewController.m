@@ -11,10 +11,8 @@
 #import "UILabel+AttributesCopy.h"
 #import "AMCollectionView.h"
 
-@interface AMMenuViewController () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
+@interface AMMenuViewController ()
 @end
 
 @implementation AMMenuViewController
-
-
 @end

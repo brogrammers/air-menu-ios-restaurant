@@ -7,12 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <JCRSlideCollectionViewCell/JCRSlideCollectionViewCell.h>
+#import "AMSlideCollectionViewCell.h"
 
-@interface AMRestaurantCell : JCRSlideCollectionViewCell <UIScrollViewDelegate>
+@interface AMRestaurantCell : AMSlideCollectionViewCell <UIScrollViewDelegate>
 @property (nonatomic, weak, readonly) UILabel *textLabel;
 @property (nonatomic, weak, readonly) UILabel *subtitleLabel;
 @property (nonatomic, readwrite, strong) NSIndexPath *indexPath;
 @property (nonatomic, copy) void (^tapBlock)(NSIndexPath *indexPath);
--(void)restoreState;
 @end

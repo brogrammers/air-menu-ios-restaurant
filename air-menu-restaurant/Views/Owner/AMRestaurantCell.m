@@ -99,25 +99,4 @@
     spacer.alpha = 0.2;
 }
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    [super scrollViewDidScroll:scrollView];
-    
-    CGFloat xOffset = [scrollView contentOffset].x;
-    CGFloat alpha = xOffset / (320 / 2);
-    if (xOffset < 0)
-    {
-        self.backgroundColor = [[UIColor redColor] colorWithAlphaComponent:fabs(alpha)];
-    }
-    else if (xOffset > 0)
-    {
-        self.backgroundColor = [[UIColor greenColor] colorWithAlphaComponent:fabsf(alpha)];
-    }
-}
-
--(void)restoreState
-{
-    self.backgroundColor = [UIColor clearColor];
-    [[self valueForKey:@"rightImageView"] setAlpha:0.0];
-}
 @end

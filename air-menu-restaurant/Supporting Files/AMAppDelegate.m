@@ -13,6 +13,13 @@
 #import "UIColor+AirMenuColor.h"
 #import "AMOwnerNavigationController.h"
 #import "AMStaffMemberNavigationController.h"
+#import "AMLoginViewContoller.h"
+
+typedef void (^Action)();
+
+@interface AMAppDelegate() <AMLoginViewControllerDelegate>
+@property (nonatomic, readwrite, weak) AMLoginViewContoller *loginViewController;
+@end
 
 @implementation AMAppDelegate
 
@@ -22,14 +29,12 @@
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeAlert|
                                                                            UIRemoteNotificationTypeBadge|
                                                                            UIRemoteNotificationTypeSound)];
-//    [[UIImageView appearanceWhenContainedIn:[UINavigationController class], nil] setAlpha:0.0f];
     UIWindow* window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.window = window;
     self.window.layer.contents = (id) [UIImage imageNamed:@"background_ipad"].CGImage;
 
     [[AMClient sharedClient] registerHadnler:^{
         [self didLogout];
-        [self loginWithUserName:@"rob" password:@"password123"];
     } forErrorCode:@"401"];
     
     if([[AMClient sharedClient] isLoggedIn])
@@ -38,26 +43,11 @@
     }
     else
     {
-        [self loginWithUserName:@"rob" password:@"password123"];
+        [self showLoginViewControllerAnimate:NO];
     }
     
     [window makeKeyAndVisible];
     return YES;
-}
-
--(void)loginWithUserName:(NSString *)userName password:(NSString *)password
-{
-    [[AMClient sharedClient] authenticateWithClientID:@"3449f5bc12a194ad021950970326e2e13d75fe246ad006aaed792f870cc3aaee"
-                                         clientSecret:@"7b7d80d9a048a774e1e58104d01a6d393ed7702a9203afdc0b8e44a614b2db6f"
-                                             username:userName
-                                             password:password
-                                               scopes:[AMOAuthToken allScopes]
-                                           completion:^(AMOAuthToken *token, NSError *error) {
-                                                    if(!error)
-                                                    {
-                                                        [self didLogin];
-                                                    }
-                                               }];
 }
 
 -(void)didLogin
@@ -76,13 +66,51 @@
         {
             viewController = [[AMStaffMemberNavigationController alloc] initWithScopes:user.scopes user:user];
         }
-        
         self.window.rootViewController = viewController;
-        [self animateApplicationApperiance];
+        [self animateApplicationApperiance:nil];
     }];
 }
 
--(void)animateApplicationApperiance
+-(void)showLoginViewControllerAnimate:(BOOL)shouldAnimate
+{
+    AMLoginViewContoller *loginViewController = [[AMLoginViewContoller alloc] init];
+    loginViewController.delegate = self;
+    self.loginViewController = loginViewController;
+    self.window.rootViewController = loginViewController;
+    if(shouldAnimate)
+    {
+        [self animateApplicationApperiance:nil];
+    }
+}
+
+-(void)didRequestLoginWithUsernane:(NSString *)username password:(NSString *)password
+{
+    [self loginWithUserName:username password:password];
+}
+
+-(void)didRequestRegistrationWithUsernane:(NSString *)username passsword:(NSString *)password email:(NSString *)email
+{
+    
+}
+
+-(void)loginWithUserName:(NSString *)userName password:(NSString *)password
+{
+    [[AMClient sharedClient] authenticateWithClientID:@"3449f5bc12a194ad021950970326e2e13d75fe246ad006aaed792f870cc3aaee"
+                                         clientSecret:@"7b7d80d9a048a774e1e58104d01a6d393ed7702a9203afdc0b8e44a614b2db6f"
+                                             username:userName
+                                             password:password
+                                               scopes:[AMOAuthToken allScopes]
+                                           completion:^(AMOAuthToken *token, NSError *error) {
+                                               if(!error)
+                                               {
+                                                   [self animateApplicationDisapperiance:^{
+                                                       [self didLogin];
+                                                   }];
+                                               }
+                                           }];
+}
+
+-(void)animateApplicationApperiance:(Action)block
 {
     self.window.rootViewController.view.alpha = 0.0;
     [UIView animateWithDuration:0.5
@@ -90,11 +118,12 @@
                         options:UIViewAnimationOptionCurveEaseInOut
                      animations:^{
                          self.window.rootViewController.view.alpha = 1.0;
+                         if(block) block();
                      }
                      completion:nil];
 }
 
--(void)animateApplicationDisapperiance
+-(void)animateApplicationDisapperiance:(Action)block
 {
     [UIView animateWithDuration:0.5
                           delay:0.0
@@ -104,12 +133,15 @@
                      }
                      completion:^(BOOL finished) {
                          self.window.rootViewController = nil;
+                         if(block) block();
                      }];
 }
 
 -(void)didLogout
 {
-    [self animateApplicationDisapperiance];
+    [self animateApplicationDisapperiance:^{
+        [self showLoginViewControllerAnimate:YES];
+    }];
 }
 
 @end

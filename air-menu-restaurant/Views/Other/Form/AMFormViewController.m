@@ -13,6 +13,7 @@
 #import "AMFormMapCell.h"
 #import "AMButton.h"
 #import "AMFormSwitchCell.h"
+#import "AMSecureTextFieldCell.h"
 
 @interface AMFormViewController () <UIGestureRecognizerDelegate>
 @property (nonatomic, strong) FormAction action;
@@ -85,13 +86,15 @@ deleteButtonCaption:(NSString *)deleteButtonCaption
                                                    XLFormRowDescriptorTypeNumber: [AMFormTextFieldCell class],
                                                    XLFormRowDescriptorTypeInteger: [AMFormTextFieldCell class],
                                                    @"AMFormRowDescriptorTypeMap" : [AMFormMapCell class],
-                                                   XLFormRowDescriptorTypeBooleanCheck : [AMFormSwitchCell class]
+                                                   XLFormRowDescriptorTypeBooleanCheck : [AMFormSwitchCell class],
+                                                   XLFormRowDescriptorTypePassword : [AMSecureTextFieldCell class]
                                                    } mutableCopy];
         self.tableView.separatorColor = [UIColor clearColor];
         self.view.backgroundColor = [UIColor clearColor];
         self.tableView.backgroundColor = [UIColor clearColor];
         self.seenCells = [NSMutableSet set];
         self.tableView.contentInset = UIEdgeInsetsMake(20, 0, 40, 0);
+        self.tableView.showsVerticalScrollIndicator = NO;
     }
     return self;
 }
@@ -230,7 +233,7 @@ deleteButtonCaption:(NSString *)deleteButtonCaption
 {
     XLFormDescriptor *staffKindForm = [XLFormDescriptor formDescriptorWithTitle:@"New staff kind"];
     XLFormSectionDescriptor *section = [XLFormSectionDescriptor formSectionWithTitle:@"About staff kind"];
-    [@[@"name", @"handles orders ?", @"handles order items ?"] each:^(NSString *title) {
+    [@[@"name", @"handles orders ?", @"handles items ?"] each:^(NSString *title) {
         XLFormRowDescriptor *row;
         if ([title characterAtIndex:title.length - 1] == '?')
         {
@@ -256,4 +259,63 @@ deleteButtonCaption:(NSString *)deleteButtonCaption
     return controller;
 }
 
++(AMFormViewController *)loginViewController
+{
+    XLFormDescriptor *loginForm = [XLFormDescriptor formDescriptorWithTitle:@""];
+    XLFormSectionDescriptor *loginSection = [XLFormSectionDescriptor formSectionWithTitle:@"Your details"];
+    [@[@"username", @"password"] each:^(NSString *title) {
+        XLFormRowDescriptor *row;
+        if([title isEqualToString:@"password"])
+        {
+            row = [XLFormRowDescriptor formRowDescriptorWithTag:title rowType:XLFormRowDescriptorTypePassword title:title];
+        }
+        else
+        {
+            row = [XLFormRowDescriptor formRowDescriptorWithTag:title rowType:XLFormRowDescriptorTypeText title:title];
+        }
+        
+        row.required = YES;
+        [loginSection addFormRow:row];
+    }];
+    
+    [loginForm addFormSection:loginSection];
+    AMFormViewController *controller = [[AMFormViewController alloc] initWithForm:loginForm
+                                                                         formMode:XLFormModeCreate
+                                                                 showCancelButton:YES
+                                                                   showSaveButton:YES
+                                                                 showDeleteButton:NO
+                                                              deleteButtonCaption:@""
+                                                                       tableStyle:UITableViewStyleGrouped];
+    return controller;
+}
+
++(AMFormViewController *)createStaffMemberViewController
+{
+    XLFormDescriptor *staffMemberSectionForm = [XLFormDescriptor formDescriptorWithTitle:@"New staff member"];
+    XLFormSectionDescriptor *staffMemberSection = [XLFormSectionDescriptor formSectionWithTitle:@"About staff member"];
+    [@[@"name", @"username", @"email", @"password"] each:^(NSString *title) {
+        XLFormRowDescriptor *row;
+        if ([title isEqualToString:@"password"])
+        {
+            row = [XLFormRowDescriptor formRowDescriptorWithTag:title rowType:XLFormRowDescriptorTypePassword title:title];
+        }
+        else
+        {
+            row = [XLFormRowDescriptor formRowDescriptorWithTag:title rowType:XLFormRowDescriptorTypeText title:title];
+        }
+        
+        row.required = YES;
+        [staffMemberSection addFormRow:row];
+    }];
+    
+    [staffMemberSectionForm addFormSection:staffMemberSection];
+    AMFormViewController *controller = [[AMFormViewController alloc] initWithForm:staffMemberSectionForm
+                                                                         formMode:XLFormModeCreate
+                                                                 showCancelButton:YES
+                                                                   showSaveButton:YES
+                                                                 showDeleteButton:NO
+                                                              deleteButtonCaption:@""
+                                                                       tableStyle:UITableViewStyleGrouped];
+    return controller;
+}
 @end

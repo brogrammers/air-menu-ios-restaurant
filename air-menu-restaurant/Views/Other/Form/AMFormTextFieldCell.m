@@ -59,7 +59,7 @@
     [spacer autoPinEdge:ALEdgeLeading toEdge:ALEdgeLeading ofView:self.contentView withOffset:30.0];
     [spacer autoPinEdge:ALEdgeTrailing toEdge:ALEdgeTrailing ofView:self.contentView withOffset:0];
     [spacer autoSetDimension:ALDimensionHeight toSize:0.5];
-    spacer.alpha = 0.1;
+    spacer.alpha = 0.3;
     spacer.shouldFade = NO;
     
     [[UITextField appearance] setKeyboardAppearance:UIKeyboardAppearanceDark];

@@ -67,6 +67,18 @@
     [button setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
 }
 
+-(void)setSelected:(BOOL)selected
+{
+    if(selected)
+    {
+        self.selectedBackgroundView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.2];
+    }
+    else
+    {
+        self.selectedBackgroundView.backgroundColor = [UIColor clearColor];
+    }
+}
+
 -(void)didTap:(UIButton *)buttom
 {
     if (self.tapBlock) {
