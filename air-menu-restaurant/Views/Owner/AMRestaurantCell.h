@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "AMSlideCollectionViewCell.h"
 
-@interface AMRestaurantCell : AMSlideCollectionViewCell <UIScrollViewDelegate>
+@interface AMRestaurantCell : AMSlideCollectionViewCell
 @property (nonatomic, weak, readonly) UILabel *textLabel;
 @property (nonatomic, weak, readonly) UILabel *subtitleLabel;
 @property (nonatomic, readwrite, strong) NSIndexPath *indexPath;

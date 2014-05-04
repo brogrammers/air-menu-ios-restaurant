@@ -19,8 +19,10 @@
 #import "AMDataSource.h"
 #import "UICollectionView+AMCollectionViewAdapter.h"
 #import "AMPeopleCollectionViewAdapter.h"
+#import "UIImage+TextDrawing.h"
+#import "CRToastManager+AMNotification.h"
 
-@interface AMPeopleViewController () <UICollectionViewDelegate, LXReorderableCollectionViewDataSource>
+@interface AMPeopleViewController () <UICollectionViewDelegate>
 @property (nonatomic, readwrite, weak) AMCollectionView *collectionView;
 @property (nonatomic, readwrite, strong) AMDataSource *source;
 @property (nonatomic, readwrite, strong) AMFormViewController *formViewController;
@@ -42,34 +44,35 @@
 -(void)setup
 {
     [self setupCollectionView];
+    [self configureCollectionviewLayout];
     self.view.backgroundColor = [UIColor clearColor];
 }
 
 -(void)setupCollectionView
 {
     AMCollectionView *collectionView = [AMCollectionView collectionViewWithLayoutClass:[AMReorderableLayout class]];
-    collectionView.refreshBlock = ^{
-        [self.source refresh];
-    };
     self.collectionView = collectionView;
     [self.view addSubview:collectionView];
+    [self.collectionView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
     self.collectionView.identifierToCellClass = @{@"member_cell" : [AMStaffMemberCell class]};
     self.collectionView.identifierToHeaderClass = @{@"staff_kind_header" : [AMStaffKindCell class]};
     self.collectionView.identifierToFooterClass = @{@"staff_kind_footer" : [UICollectionReusableView class]};
-    [self.collectionView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
-    [self.collectionView.collectionViewLayout registerClass:[AMBackgroundDecorationView class] forDecorationViewOfKind:@"background"];
+    self.collectionView.refreshBlock = ^{ [self.source refresh]; };
     self.collectionView.delegate = self;
-    
     AMHeaderCellWithAdd *header = [[AMHeaderCellWithAdd alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 30)];
     [header.titleLabel setTextWithExistingAttributes:@"Staff Kinds"];
-    header.tapBlock = ^{
-        [self showInputForNewStaffKind];
-    };
-    self.collectionView.refreshBlock = ^{
-        [self.collectionView didEndRefreshing];
-    };
+    header.tapBlock = ^{ [self showInputForNewStaffKind]; };
     self.collectionView.headerView = header;
     self.collectionView.contentInset = UIEdgeInsetsMake(80, 0, 0, 0);
+}
+
+-(void)configureCollectionviewLayout
+{
+    UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
+    [self.collectionView.collectionViewLayout registerClass:[AMBackgroundDecorationView class] forDecorationViewOfKind:@"background"];
+    flowLayout.itemSize = CGSizeMake(320, 70);
+    flowLayout.headerReferenceSize = CGSizeMake(320, 160);
+    flowLayout.footerReferenceSize = CGSizeMake(320, 20);
 }
 
 -(void)setRestaurant:(AMRestaurant *)restaurant
@@ -77,36 +80,35 @@
     [super setRestaurant:restaurant];
     if(restaurant)
     {
-        AMPeopleCollectionViewAdapter *adapter = [AMPeopleCollectionViewAdapter new];
-        adapter.headerBlock = ^(UICollectionReusableView *header, NSIndexPath *indexPath){
-            AMStaffKindCell *staffKindCell = (AMStaffKindCell *) header;
-            staffKindCell.addAction = ^{[self showInputForNewStaffMemberOfStaffKind:[self.source.data objectAtIndex:indexPath.item]];};
-        };
         AMDataSource *source = [AMDataSource withBlock:^(Done block) {
             [[AMClient sharedClient] findStaffKindsOfRestaurant:restaurant
                                                      completion:^(NSArray *staffKinds, NSError *error) {
-                                                        block(staffKinds);
+                                                         [self.collectionView didEndRefreshing];
+                                                         if(error)
+                                                         {
+                                                            [CRToastManager showErrorWithMessage:[error localizedDescription]];
+                                                            return;
+                                                         }
+                                                         block(staffKinds);
                                                      }];
-        } destination:self.collectionView adapter:adapter];
+        } destination:self.collectionView adapter:[self createAdapter]];
         self.source = source;
     }
 }
 
-#pragma mark - Collection View Delegate Flow Layout
-
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+-(AMPeopleCollectionViewAdapter *)createAdapter
 {
-    return CGSizeMake(320, 70);
-}
-
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
-{
-    return CGSizeMake(320, 160);
-}
-
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section
-{
-    return CGSizeMake(320, 20);
+    AMPeopleCollectionViewAdapter *adapter = [AMPeopleCollectionViewAdapter new];
+    adapter.headerBlock = ^(UICollectionReusableView *header, NSIndexPath *indexPath){
+        AMStaffKindCell *staffKindCell = (AMStaffKindCell *) header;
+        staffKindCell.addAction = ^{[self showInputForNewStaffMemberOfStaffKind:[self.source.data objectAtIndex:indexPath.item]];};
+        staffKindCell.leftImage = [UIImage drawText:@"" inImageWithSize:CGSizeMake(35, 35) atPoint:CGPointZero withFont:[UIFont fontWithName:ICON_FONT size:35.0f]];
+        staffKindCell.rightImage = [UIImage drawText:@"" inImageWithSize:CGSizeMake(30, 30) atPoint:CGPointZero withFont:[UIFont fontWithName:ICON_FONT size:30.0f]];
+    };
+    adapter.cellBlock = ^(UICollectionViewCell *cell, NSIndexPath *indexPath) {
+        
+    };
+    return adapter;
 }
 
 #pragma mark - Collection View Reoardable Flow Layout Data Source
@@ -164,7 +166,6 @@
 
 -(void)createStaffKindFromInput
 {
-    
     if(self.restaurant)
     {
         XLFormDescriptor *form = self.formViewController.form;

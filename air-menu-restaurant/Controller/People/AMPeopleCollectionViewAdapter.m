@@ -34,18 +34,20 @@
 
 - (void)collectionView:(UICollectionView *)collectionView itemAtIndexPath:(NSIndexPath *)fromIndexPath willMoveToIndexPath:(NSIndexPath *)toIndexPath
 {
-    //    AMStaffKind *fromStaffKind = self.staffKinds[fromIndexPath.section];
-    //    AMStaffKind *toStaffKind = self.staffKinds[toIndexPath.section];
-    //    NSMutableArray *fromStaffMembers = self.staffKindsToStaffMembers[fromStaffKind];
-    //    NSMutableArray *toStaffMembers = self.staffKindsToStaffMembers[toStaffKind];
-    //    AMStaffMember *member = fromStaffMembers[fromIndexPath.item];
-    //    [fromStaffMembers removeObjectAtIndex:fromIndexPath.item];
-    //    [toStaffMembers insertObject:member atIndex:toIndexPath.item];
+    AMStaffKind *fromStaffKind = self.dataSource.data[fromIndexPath.section];
+    AMStaffKind *toStaffKind = self.dataSource.data[toIndexPath.section];
+    NSMutableArray *fromStaffMembers = [fromStaffKind.members mutableCopy];
+    NSMutableArray *toStaffMembers = [toStaffKind.members mutableCopy];
+    if(fromStaffKind == toStaffKind) fromStaffMembers = toStaffMembers;
+    AMStaffMember *member = fromStaffMembers[fromIndexPath.item];
+    [fromStaffMembers removeObjectAtIndex:fromIndexPath.item];
+    [fromStaffKind setValue:fromStaffMembers forKey:@"members"];
+    [toStaffMembers insertObject:member atIndex:toIndexPath.item];
+    [toStaffKind setValue:toStaffMembers forKey:@"members"];
 }
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
 {
-    
     UICollectionReusableView *view = [super collectionView:collectionView viewForSupplementaryElementOfKind:kind atIndexPath:indexPath];
     if([view isKindOfClass:[AMStaffKindCell class]])
     {

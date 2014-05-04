@@ -7,10 +7,12 @@
 //
 
 #import "AMStaffMemberCell+ModelExtension.h"
+#import "UILabel+AttributesCopy.h"
 
 @implementation AMStaffMemberCell (ModelExtension)
 -(void)displayData:(id)item atIndexPath:(NSIndexPath *)indexPath
 {
-    
+    AMStaffMember *member = item;
+    [self.memberName setTextWithExistingAttributes:member.name];
 }
 @end

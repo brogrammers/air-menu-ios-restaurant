@@ -30,7 +30,7 @@
 {
     [self setupPhoto];
     [self setupName];
-    self.backgroundColor = [UIColor clearColor];
+    self.backgroundColor = [[UIColor clearColor] colorWithAlphaComponent:0.0];
     self.contentView.backgroundColor = [UIColor clearColor];
 }
 
