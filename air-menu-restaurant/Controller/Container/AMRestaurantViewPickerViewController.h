@@ -9,5 +9,5 @@
 #import "AMPickerViewController.h"
 
 @interface AMRestaurantViewPickerViewController : AMPickerViewController
-
+@property (nonatomic, readwrite) AMRestaurant *restaurant;
 @end

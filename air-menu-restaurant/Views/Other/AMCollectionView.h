@@ -9,7 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface AMCollectionView : UICollectionView
++(AMCollectionView *)collectionViewWithLayoutClass:(Class)layoutClass;
+@property (nonatomic, readwrite, weak) UIView *headerView;
 @property (nonatomic, copy) void (^refreshBlock)();
 -(void)didEndRefreshing;
-@property (nonatomic, readwrite, weak) UIView *headerView;
 @end

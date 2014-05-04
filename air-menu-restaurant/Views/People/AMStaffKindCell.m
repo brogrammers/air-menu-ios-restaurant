@@ -34,6 +34,8 @@
 
 -(void)setup
 {
+    self.backgroundColor = [UIColor clearColor];
+    self.contentView.backgroundColor = [UIColor clearColor];
     [self setupStaffKindLabel];
     [self setupMembersCountLabel];
     [self setupAcceptsOrderItemsLabel];

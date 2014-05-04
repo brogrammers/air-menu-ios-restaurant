@@ -27,6 +27,18 @@
     return self;
 }
 
+-(void)setRestaurant:(AMRestaurant *)restaurant
+{
+    _restaurant = restaurant;
+    [self.controllers each:^(UIViewController *controller) {
+       if([controller isKindOfClass:[AMRestaurantDrivenViewController class]])
+       {
+           AMRestaurantDrivenViewController *restaurantDrivenController = (AMRestaurantDrivenViewController *) controller;
+           restaurantDrivenController.restaurant = restaurant;
+       }
+    }];
+}
+
 -(void)configure
 {
     NSMutableArray *controllers = [NSMutableArray array];

@@ -7,7 +7,6 @@
 //
 
 #import "AMSlideCollectionViewCell.h"
-
 typedef void (^ButtonAction)();
 
 @interface AMStaffKindCell : AMSlideCollectionViewCell

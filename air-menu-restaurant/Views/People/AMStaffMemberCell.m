@@ -44,7 +44,7 @@
     [self.memberPhoto autoSetDimensionsToSize:CGSizeMake(50, 50)];
     self.memberPhoto.layer.cornerRadius = 25.0f;
     self.memberPhoto.layer.borderColor = [UIColor whiteColor].CGColor;
-    self.memberPhoto.layer.borderWidth = 2.5f;
+    self.memberPhoto.layer.borderWidth = 2.0f;
 }
 
 -(void)setupName

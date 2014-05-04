@@ -14,13 +14,13 @@
 
 @implementation AMCollectionView
 
-- (id)initWithFrame:(CGRect)frame
++(AMCollectionView *)collectionViewWithLayoutClass:(Class)layoutClass
 {
-    self = [super initWithFrame:frame];
-    if (self) {
-        // Initialization code
-    }
-    return self;
+    AMCollectionView *collectionView = [[AMCollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:[[layoutClass alloc] init]];
+    collectionView.translatesAutoresizingMaskIntoConstraints = NO;
+    collectionView.backgroundColor = [UIColor clearColor];
+    collectionView.bounces = YES;
+    return collectionView;
 }
 
 -(instancetype)initWithFrame:(CGRect)frame collectionViewLayout:(UICollectionViewLayout *)layout
@@ -73,7 +73,7 @@
     self.headerView.frame = headerFrame;
     
     CGRect refreshControlFrame = self.refresh.frame;
-    refreshControlFrame.origin.y += -50;
+    refreshControlFrame.origin.y += -30;
     self.refresh.frame = refreshControlFrame;
 }
 

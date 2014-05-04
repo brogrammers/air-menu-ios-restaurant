@@ -130,6 +130,7 @@
     cell.indexPath = indexPath;
     cell.subtitleLabel.text = [NSString stringWithFormat:@"%@, %@, %@", restaurant.address.addressLine1, restaurant.address.addressLine2, restaurant.address.city];
     cell.tapBlock = ^(NSIndexPath *indexPath){
+        self.pickerViewController.restaurant = self.restaurants[indexPath.row];
         [self.navigationController pushViewController:self.pickerViewController animated:YES];
     };
     cell.leftBlock = ^{

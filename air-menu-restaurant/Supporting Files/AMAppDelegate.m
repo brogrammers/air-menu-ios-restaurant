@@ -14,6 +14,7 @@
 #import "AMOwnerNavigationController.h"
 #import "AMStaffMemberNavigationController.h"
 #import "AMLoginViewContoller.h"
+#import <MZFormSheetController/MZFormSheetController.h>
 
 typedef void (^Action)();
 
@@ -29,6 +30,8 @@ typedef void (^Action)();
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeAlert|
                                                                            UIRemoteNotificationTypeBadge|
                                                                            UIRemoteNotificationTypeSound)];
+    [[MZFormSheetBackgroundWindow appearance] setBackgroundBlurEffect:YES];
+    [[MZFormSheetBackgroundWindow appearance] setBlurRadius:35.0];
     UIWindow* window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.window = window;
     self.window.layer.contents = (id) [UIImage imageNamed:@"background_ipad"].CGImage;
