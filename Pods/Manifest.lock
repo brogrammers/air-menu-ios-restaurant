@@ -22,6 +22,8 @@ PODS:
     - AFNetworking (~> 2.1.0)
     - Mantle (~> 1.3.1)
     - ObjectiveSugar (~> 1.1.0)
+  - AXRatingView (0.9.6)
+  - Colours (5.3.0)
   - CRToast (0.0.6)
   - FlatPillButton (1.0.0)
   - FRDLivelyButton (1.1.2)
@@ -63,10 +65,12 @@ PODS:
     - MRProgress/Helper
   - MRProgress/WeakProxy (0.4.3)
   - MSDynamicsDrawerViewController (1.5.1)
-  - MZAppearance (1.1.2)
+  - MZAppearance (1.1.3)
   - MZFormSheetController (2.3.4):
-    - MZAppearance (~> 1.1.2)
+    - MZAppearance (~> 1.1.3)
   - ObjectiveSugar (1.1.0)
+  - pop (1.0.4)
+  - Shimmer (1.0.1)
   - TDMScreenEdgePanGestureRecognizer (0.0.1)
   - UIView+AutoLayout (1.2.0)
   - XLDataLoader (1.0.0):
@@ -78,6 +82,8 @@ PODS:
 
 DEPENDENCIES:
   - AirMenuKit
+  - AXRatingView (~> 0.9.6)
+  - Colours (~> 5.3.0)
   - CRToast (~> 0.0.6)
   - FlatPillButton (from `git://github.com/brianmichel/FlatPillButton.git`)
   - FRDLivelyButton
@@ -87,6 +93,8 @@ DEPENDENCIES:
   - MSDynamicsDrawerViewController (~> 1.5.1)
   - MZFormSheetController (~> 2.3.4)
   - ObjectiveSugar (~> 1.1.0)
+  - pop (~> 1.0)
+  - Shimmer (~> 1.0.1)
   - TDMScreenEdgePanGestureRecognizer (from `https://github.com/duemunk/TDMScreenEdgePanGestureRecognizer.git`)
   - UIView+AutoLayout
   - XLForm (~> 1.0.0)
@@ -100,6 +108,8 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   AFNetworking: ae513199cca79e9d7af2708ccabe2ed075550c42
   AirMenuKit: f608b618b6ff1bdffa159bf361f0a5c93afcd251
+  AXRatingView: 1313deff621ed54f6db88a9360aa3e14c4768da8
+  Colours: 4df972e1ff8d888acad5a00302288a94c43ec5dc
   CRToast: 7def6720179d7c861b06222a82a4ad4bdfe476f0
   FlatPillButton: b0552a50478bfcb7548e09cafeb8da6f6ee95288
   FRDLivelyButton: ef29e27fa81a9a434412d1f3b266a2736349663b
@@ -109,9 +119,11 @@ SPEC CHECKSUMS:
   Mantle: abc3b0c81bc66eb624cf9cebb8640e377d5a44ae
   MRProgress: c04ecd74ba9ad5a32f9188014db20554dd74eba9
   MSDynamicsDrawerViewController: 2409ca61449d8541a3ee640bfd2d230c3734d3c4
-  MZAppearance: 75bc6c786025c311ebc247b01e1dead5cd29f7c5
-  MZFormSheetController: e14169b86864f515905e3f2775b4d81a2fa836ac
+  MZAppearance: 490bcde824c00598eb62efe732f2786d9342b907
+  MZFormSheetController: 631fda39fe80df606a5a5c44b804a0c0edc5afd5
   ObjectiveSugar: fed588577bcf9733546aeaa089de444e4bab9a52
+  pop: 63a4f5e8942077fed2efe195036ecc572c71c48c
+  Shimmer: a1b92685f04ae7363e655f636a41a276dbb1507e
   TDMScreenEdgePanGestureRecognizer: ab6e566026b24974a582ca9259eef01775234ce3
   UIView+AutoLayout: 1bcec87eaa77ffa088dc37e061d25fdead740089
   XLDataLoader: 05925b09fb2110b50a98d5fd9500823f5035b4ea

@@ -9,7 +9,7 @@
 #import "AMRestaurantViewPickerViewController.h"
 #import "AMPeopleViewController.h"
 #import "AMDevicesViewController.h"
-#import "AMMenuViewController.h"
+#import "AMMenusViewController.h"
 
 @interface AMRestaurantViewPickerViewController ()
 
@@ -47,7 +47,7 @@
     
     if([self.scopes containsObject:@(AMOAuthScopeGetMenus)] || self.user.type == AMUserTypeOwner)
     {
-        [controllers addObject:[[AMMenuViewController alloc] initWithScopes:self.scopes user:self.user]];
+        [controllers addObject:[[AMMenusViewController alloc] initWithScopes:self.scopes user:self.user restaurant:nil]];
         [names addObject:@"MENUS"];
         [icons addObject:@""];
     }
@@ -65,7 +65,7 @@
        [self.scopes containsObject:@(AMOAuthScopeGetGroups)] ||
        self.user.type == AMUserTypeOwner)
     {
-        [controllers addObject:[[AMDevicesViewController alloc] initWithScopes:self.scopes user:self.user]];
+        [controllers addObject:[[AMDevicesViewController alloc] initWithScopes:self.scopes user:self.user restaurant:nil]];
         [names addObject:@"DEVICES"];
         [icons addObject:@""];
     }

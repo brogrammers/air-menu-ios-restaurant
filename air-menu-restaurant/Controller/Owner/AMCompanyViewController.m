@@ -88,7 +88,7 @@
     self.collectionView = collectionView;
     [self.view addSubview:collectionView];
     self.collectionView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.collectionView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+    [self.collectionView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(20, 0, 0, 0)];
     self.collectionView.delegate = self;
     self.collectionView.dataSource =self;
     self.collectionView.backgroundColor = [UIColor clearColor];
@@ -97,8 +97,13 @@
     self.pickerViewController = [[AMRestaurantViewPickerViewController alloc] initWithScopes:self.scopes user:self.user];
     self.pickerViewController.controller = self.controller;
     [self.collectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"header"];
-    [self.collectionView registerClass:[AMHeaderCellWithAdd class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"add_company_header"];
     self.collectionView.bounces = YES;
+    AMHeaderCellWithAdd *header = [[AMHeaderCellWithAdd alloc] initWithFrame:CGRectMake(0, 0, 0, 30)];
+    [header.titleLabel setTextWithExistingAttributes:@"Restaurants"];
+    header.tapBlock = ^{
+        [self.navigationController pushViewController:[self restaurantCreateViewController] animated:YES];
+    };
+    self.collectionView.headerView = header;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -146,16 +151,6 @@
     cell.leftImage = [UIImage drawText:@"" inImageWithSize:CGSizeMake(30, 30) atPoint:CGPointZero withFont:[UIFont fontWithName:ICON_FONT size:30.0f]];
     cell.rightImage = [UIImage drawText:@"" inImageWithSize:CGSizeMake(30, 30) atPoint:CGPointZero withFont:[UIFont fontWithName:ICON_FONT size:30.0f]];
     return cell;
-}
-
-- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
-{
-    AMHeaderCellWithAdd *header = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"add_company_header" forIndexPath:indexPath];
-    [header.titleLabel setTextWithExistingAttributes:@"Restaurants"];
-    header.tapBlock = ^{
-        [self.navigationController pushViewController:[self restaurantCreateViewController] animated:YES];
-    };
-    return header;
 }
 
 -(void)updateRestaurant:(AMRestaurant *)restaurant
@@ -254,11 +249,6 @@
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     return CGSizeMake(self.view.bounds.size.width, 70);
-}
-
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
-{
-    return CGSizeMake(self.view.bounds.size.width, 80);
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section;

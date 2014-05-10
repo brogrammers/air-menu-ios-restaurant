@@ -25,8 +25,8 @@
     if (self)
     {
         [self setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        self.titleEdgeInsets = UIEdgeInsetsMake(3, 20, 3, 20);
-        self.titleLabel.font = [UIFont fontWithName:GOTHAM_LIGHT size:20];
+        self.titleEdgeInsets = UIEdgeInsetsMake(0, 15, 0, 15);
+        self.titleLabel.font = [UIFont fontWithName:GOTHAM_THIN size:20];
     }
     return self;
 }

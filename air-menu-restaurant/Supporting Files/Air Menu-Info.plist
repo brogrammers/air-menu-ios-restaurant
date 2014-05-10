@@ -30,7 +30,7 @@
 	<true/>
 	<key>UIAppFonts</key>
 	<array>
-        <string>Idlewild-Bold.otf</string>
+		<string>Idlewild-Bold.otf</string>
 		<string>Idlewild-Book.otf</string>
 		<string>Idlewild-Light.otf</string>
 		<string>Idlewild-Medium.otf</string>
@@ -96,6 +96,6 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>UIViewEdgeAntialiasing</key>
-	<true/>
+	<false/>
 </dict>
 </plist>

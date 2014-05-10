@@ -14,6 +14,8 @@
 #import "AMButton.h"
 #import "AMFormSwitchCell.h"
 #import "AMSecureTextFieldCell.h"
+#import <MZFormSheetController/MZFormSheetController.h>
+#import "AMDecimalFieldCell.h"
 
 @interface AMFormViewController () <UIGestureRecognizerDelegate>
 @property (nonatomic, strong) FormAction action;
@@ -83,11 +85,11 @@ deleteButtonCaption:(NSString *)deleteButtonCaption
                                                    XLFormRowDescriptorTypeTwitter: [AMFormTextFieldCell class],
                                                    XLFormRowDescriptorTypeAccount: [AMFormTextFieldCell class],
                                                    XLFormRowDescriptorTypePassword: [AMFormTextFieldCell class],
-                                                   XLFormRowDescriptorTypeNumber: [AMFormTextFieldCell class],
+                                                   XLFormRowDescriptorTypeNumber: [AMDecimalFieldCell class],
                                                    XLFormRowDescriptorTypeInteger: [AMFormTextFieldCell class],
                                                    @"AMFormRowDescriptorTypeMap" : [AMFormMapCell class],
                                                    XLFormRowDescriptorTypeBooleanCheck : [AMFormSwitchCell class],
-                                                   XLFormRowDescriptorTypePassword : [AMSecureTextFieldCell class]
+                                                   XLFormRowDescriptorTypePassword : [AMSecureTextFieldCell class],
                                                    } mutableCopy];
         self.tableView.separatorColor = [UIColor clearColor];
         self.view.backgroundColor = [UIColor clearColor];
@@ -95,8 +97,17 @@ deleteButtonCaption:(NSString *)deleteButtonCaption
         self.seenCells = [NSMutableSet set];
         self.tableView.contentInset = UIEdgeInsetsMake(20, 0, 40, 0);
         self.tableView.showsVerticalScrollIndicator = NO;
+        [self.view addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapBackground:)]];
     }
     return self;
+}
+
+-(void)didTapBackground:(UIGestureRecognizer *)recgoniser
+{
+    if(recgoniser.state == UIGestureRecognizerStateEnded)
+    {
+        [self mz_dismissFormSheetControllerAnimated:YES completionHandler:nil];
+    }
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -313,6 +324,118 @@ deleteButtonCaption:(NSString *)deleteButtonCaption
                                                                          formMode:XLFormModeCreate
                                                                  showCancelButton:YES
                                                                    showSaveButton:YES
+                                                                 showDeleteButton:NO
+                                                              deleteButtonCaption:@""
+                                                                       tableStyle:UITableViewStyleGrouped];
+    return controller;
+}
+
++(AMFormViewController *)createMenuViewController
+{
+    XLFormDescriptor *menuFormDescriptor = [XLFormDescriptor formDescriptorWithTitle:@"New Menu"];
+    XLFormSectionDescriptor *menuSection = [XLFormSectionDescriptor formSectionWithTitle:@"About menu"];
+    [@{@"name" : XLFormRowDescriptorTypeText, @"active" : XLFormRowDescriptorTypeBooleanCheck} each:^(NSString *name, NSString *type) {
+        XLFormRowDescriptor *row = [XLFormRowDescriptor formRowDescriptorWithTag:name rowType:type title:name];
+        row.required = YES;
+        [menuSection addFormRow:row];
+    }];
+    
+    [menuFormDescriptor addFormSection:menuSection];
+    AMFormViewController *controller = [[AMFormViewController alloc] initWithForm:menuFormDescriptor
+                                                                         formMode:XLFormModeCreate
+                                                                 showCancelButton:YES
+                                                                   showSaveButton:YES
+                                                                 showDeleteButton:NO
+                                                              deleteButtonCaption:@""
+                                                                       tableStyle:UITableViewStyleGrouped];
+    return controller;
+}
+
++(AMFormViewController *)updateMenuViewController:(AMMenu *)menu
+{
+    XLFormDescriptor *menuFormDescriptor = [XLFormDescriptor formDescriptorWithTitle:@"Update Menu"];
+    XLFormSectionDescriptor *menuSection = [XLFormSectionDescriptor formSectionWithTitle:@"About menu"];
+    [@{@"name" : XLFormRowDescriptorTypeText, @"active" : XLFormRowDescriptorTypeBooleanCheck} each:^(NSString *name, NSString *type) {
+        XLFormRowDescriptor *row = [XLFormRowDescriptor formRowDescriptorWithTag:name rowType:type title:name];
+        row.required = YES;
+        [menuSection addFormRow:row];
+    }];
+    
+    [menuFormDescriptor addFormSection:menuSection];
+    AMFormViewController *controller = [[AMFormViewController alloc] initWithForm:menuFormDescriptor
+                                                                         formMode:XLFormModeCreate
+                                                                 showCancelButton:YES
+                                                                   showSaveButton:YES
+                                                                 showDeleteButton:NO
+                                                              deleteButtonCaption:@""
+                                                                       tableStyle:UITableViewStyleGrouped];
+    [[menuFormDescriptor formRowWithTag:@"name"] setValue:menu.name];
+    [[menuFormDescriptor formRowWithTag:@"active"] setValue:menu.isActive];
+    return controller;
+}
+
++(AMFormViewController *)createSectionViewController
+{
+    XLFormDescriptor *sectionFormDescriptor = [XLFormDescriptor formDescriptorWithTitle:@"New Menu Section"];
+    XLFormSectionDescriptor *menuSectionSection = [XLFormSectionDescriptor formSectionWithTitle:@"About menu section"];
+    [@[@"name",@"description"] each:^(NSString *name) {
+        XLFormRowDescriptor *row = [XLFormRowDescriptor formRowDescriptorWithTag:name rowType:XLFormRowDescriptorTypeText title:name];
+        row.required = YES;
+        [menuSectionSection addFormRow:row];
+    }];
+    
+    [sectionFormDescriptor addFormSection:menuSectionSection];
+    AMFormViewController *controller = [[AMFormViewController alloc] initWithForm:sectionFormDescriptor
+                                                                         formMode:XLFormModeCreate
+                                                                 showCancelButton:YES
+                                                                   showSaveButton:YES
+                                                                 showDeleteButton:NO
+                                                              deleteButtonCaption:@""
+                                                                       tableStyle:UITableViewStyleGrouped];
+    return controller;
+}
+
++(AMFormViewController *)updateSectionViewController:(AMMenuSection *)section
+{
+    XLFormDescriptor *sectionFormDescriptor = [XLFormDescriptor formDescriptorWithTitle:@"Update Menu Section"];
+    XLFormSectionDescriptor *menuSectionSection = [XLFormSectionDescriptor formSectionWithTitle:@"About menu section"];
+    [@[@"name",@"description"] each:^(NSString *name) {
+        XLFormRowDescriptor *row = [XLFormRowDescriptor formRowDescriptorWithTag:name rowType:XLFormRowDescriptorTypeText title:name];
+        row.required = YES;
+        [menuSectionSection addFormRow:row];
+    }];
+    
+    [sectionFormDescriptor addFormSection:menuSectionSection];
+    AMFormViewController *controller = [[AMFormViewController alloc] initWithForm:sectionFormDescriptor
+                                                                         formMode:XLFormModeCreate
+                                                                 showCancelButton:YES
+                                                                   showSaveButton:YES
+                                                                 showDeleteButton:NO
+                                                              deleteButtonCaption:@""
+                                                                       tableStyle:UITableViewStyleGrouped];
+    [[sectionFormDescriptor formRowWithTag:@"name"] setValue:section.name];
+    [[sectionFormDescriptor formRowWithTag:@"description"] setValue:section.details];
+    return controller;
+}
+
++(AMFormViewController *)createMenuItemViewController
+{
+    XLFormDescriptor *itemFormDecriptor =  [XLFormDescriptor formDescriptorWithTitle:@"New Menu Item"];
+    XLFormSectionDescriptor *itemFormSection = [XLFormSectionDescriptor formSectionWithTitle:@"About item"];
+    [@[@"name", @"description", @"currency"] each:^(NSString *name) {
+        XLFormRowDescriptor *row = [XLFormRowDescriptor formRowDescriptorWithTag:name rowType:XLFormRowDescriptorTypeText title:name];
+        row.required = YES;
+        [itemFormSection addFormRow:row];
+    }];
+
+    XLFormRowDescriptor *row = [XLFormRowDescriptor formRowDescriptorWithTag:@"price" rowType:XLFormRowDescriptorTypeNumber title:@"price"];
+    row.required = YES;
+    [itemFormSection addFormRow:row];
+    [itemFormDecriptor addFormSection:itemFormSection];
+    AMFormViewController *controller = [[AMFormViewController alloc] initWithForm:itemFormDecriptor
+                                                                         formMode:XLFormModeEdit
+                                                                 showCancelButton:NO
+                                                                   showSaveButton:NO
                                                                  showDeleteButton:NO
                                                               deleteButtonCaption:@""
                                                                        tableStyle:UITableViewStyleGrouped];

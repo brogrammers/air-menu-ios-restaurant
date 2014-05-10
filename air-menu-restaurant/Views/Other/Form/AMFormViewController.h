@@ -16,5 +16,10 @@ typedef void (^FormAction)();
 +(AMFormViewController *)staffKindCreateViewController;
 +(AMFormViewController *)loginViewController;
 +(AMFormViewController *)createStaffMemberViewController;
++(AMFormViewController *)createMenuViewController;
++(AMFormViewController *)updateMenuViewController:(AMMenu *)menu;
++(AMFormViewController *)createSectionViewController;
++(AMFormViewController *)updateSectionViewController:(AMMenuSection *)section;
++(AMFormViewController *)createMenuItemViewController;
 -(void)setAction:(FormAction)action forTitle:(NSString *)title;
 @end

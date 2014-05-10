@@ -15,10 +15,12 @@
 #import "AMStaffMemberNavigationController.h"
 #import "AMLoginViewContoller.h"
 #import <MZFormSheetController/MZFormSheetController.h>
+#import "AMPagedViewController.h"
+#import <MSDynamicsDrawerViewController.h>
 
 typedef void (^Action)();
 
-@interface AMAppDelegate() <AMLoginViewControllerDelegate>
+@interface AMAppDelegate() <AMLoginViewControllerDelegate, MSDynamicsDrawerViewControllerDelegate>
 @property (nonatomic, readwrite, weak) AMLoginViewContoller *loginViewController;
 @end
 
@@ -69,10 +71,13 @@ typedef void (^Action)();
         {
             viewController = [[AMStaffMemberNavigationController alloc] initWithScopes:user.scopes user:user];
         }
+        
+        ((MSDynamicsDrawerViewController *)viewController).shouldAlignStatusBarToPaneView = NO;
         self.window.rootViewController = viewController;
         [self animateApplicationApperiance:nil];
     }];
 }
+
 
 -(void)showLoginViewControllerAnimate:(BOOL)shouldAnimate
 {

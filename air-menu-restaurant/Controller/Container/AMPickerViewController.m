@@ -91,7 +91,6 @@
         self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 40, 0);
         self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
         self.tableView.separatorColor = [[UIColor whiteColor] colorWithAlphaComponent:0.1];
-
         if(self.displayHeader)
         {
             UIView *container = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 100)];

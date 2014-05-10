@@ -48,6 +48,12 @@
 #define COCOAPODS_VERSION_MINOR_AFNetworking_UIKit 2
 #define COCOAPODS_VERSION_PATCH_AFNetworking_UIKit 3
 
+// AXRatingView
+#define COCOAPODS_POD_AVAILABLE_AXRatingView
+#define COCOAPODS_VERSION_MAJOR_AXRatingView 0
+#define COCOAPODS_VERSION_MINOR_AXRatingView 9
+#define COCOAPODS_VERSION_PATCH_AXRatingView 6
+
 // AirMenuKit
 #define COCOAPODS_POD_AVAILABLE_AirMenuKit
 #define COCOAPODS_VERSION_MAJOR_AirMenuKit 0
@@ -59,6 +65,12 @@
 #define COCOAPODS_VERSION_MAJOR_CRToast 0
 #define COCOAPODS_VERSION_MINOR_CRToast 0
 #define COCOAPODS_VERSION_PATCH_CRToast 6
+
+// Colours
+#define COCOAPODS_POD_AVAILABLE_Colours
+#define COCOAPODS_VERSION_MAJOR_Colours 5
+#define COCOAPODS_VERSION_MINOR_Colours 3
+#define COCOAPODS_VERSION_PATCH_Colours 0
 
 // FRDLivelyButton
 #define COCOAPODS_POD_AVAILABLE_FRDLivelyButton
@@ -166,7 +178,7 @@
 #define COCOAPODS_POD_AVAILABLE_MZAppearance
 #define COCOAPODS_VERSION_MAJOR_MZAppearance 1
 #define COCOAPODS_VERSION_MINOR_MZAppearance 1
-#define COCOAPODS_VERSION_PATCH_MZAppearance 2
+#define COCOAPODS_VERSION_PATCH_MZAppearance 3
 
 // MZFormSheetController
 #define COCOAPODS_POD_AVAILABLE_MZFormSheetController
@@ -192,6 +204,12 @@
 #define COCOAPODS_VERSION_MINOR_ObjectiveSugar 1
 #define COCOAPODS_VERSION_PATCH_ObjectiveSugar 0
 
+// Shimmer
+#define COCOAPODS_POD_AVAILABLE_Shimmer
+#define COCOAPODS_VERSION_MAJOR_Shimmer 1
+#define COCOAPODS_VERSION_MINOR_Shimmer 0
+#define COCOAPODS_VERSION_PATCH_Shimmer 1
+
 // TDMScreenEdgePanGestureRecognizer
 #define COCOAPODS_POD_AVAILABLE_TDMScreenEdgePanGestureRecognizer
 #define COCOAPODS_VERSION_MAJOR_TDMScreenEdgePanGestureRecognizer 0
@@ -215,4 +233,10 @@
 #define COCOAPODS_VERSION_MAJOR_XLForm 1
 #define COCOAPODS_VERSION_MINOR_XLForm 0
 #define COCOAPODS_VERSION_PATCH_XLForm 0
+
+// pop
+#define COCOAPODS_POD_AVAILABLE_pop
+#define COCOAPODS_VERSION_MAJOR_pop 1
+#define COCOAPODS_VERSION_MINOR_pop 0
+#define COCOAPODS_VERSION_PATCH_pop 4
 

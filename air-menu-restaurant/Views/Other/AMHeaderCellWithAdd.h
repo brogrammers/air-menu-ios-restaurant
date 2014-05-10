@@ -11,4 +11,5 @@
 @interface AMHeaderCellWithAdd : UICollectionViewCell
 @property (nonatomic, readonly, weak) UILabel *titleLabel;
 @property (nonatomic, copy) void (^tapBlock)();
+@property (nonatomic, copy) void (^touchBlock)();
 @end

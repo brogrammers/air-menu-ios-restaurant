@@ -32,6 +32,7 @@
 {
     [self setupTitleLabel];
     [self setupButton];
+    [self.contentView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTouch:)]];
 }
 
 -(void)setupTitleLabel
@@ -44,6 +45,7 @@
                                    NSKernAttributeName : @1.0};
     [self.titleLabel autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.contentView].priority = 1;
     //[self.titleLabel autoPinEdge:ALEdgeLeading toEdge:ALEdgeLeading ofView:self.contentView withOffset:20.0].priority = 750;
+    [self.titleLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.contentView];
     [self.titleLabel setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
     [self.titleLabel setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
     label.textAlignment = NSTextAlignmentCenter;
@@ -57,7 +59,7 @@
     [self.contentView addSubview:self.addButton];
     [self.addButton setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.addButton autoPinEdge:ALEdgeTrailing toEdge:ALEdgeTrailing ofView:self.contentView withOffset:-20];
-    [self.addButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.contentView];
+    [self.addButton autoAlignAxis:ALAxisHorizontal toSameAxisOfView:self.titleLabel];
     [self.addButton setTitle:@"add" forState:UIControlStateNormal];
     button.tintColor = [UIColor whiteColor];
     [self.titleLabel autoPinEdge:ALEdgeTrailing toEdge:ALEdgeLeading ofView:self.addButton withOffset:-20.0f].priority = 750;
@@ -76,6 +78,13 @@
     else
     {
         self.selectedBackgroundView.backgroundColor = [UIColor clearColor];
+    }
+}
+
+-(void)didTouch:(UITapGestureRecognizer *)recogniser
+{
+    if (recogniser.state == UIGestureRecognizerStateEnded && self.touchBlock) {
+        self.touchBlock();
     }
 }
 

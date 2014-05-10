@@ -10,6 +10,7 @@
 
 @interface AMCollectionView()
 @property (nonatomic, readwrite, weak) UIRefreshControl *refresh;
+@property CGFloat headerViewHeight;
 @end
 
 @implementation AMCollectionView
@@ -39,6 +40,7 @@
     return self;
 }
 
+
 -(void)startRefresh:(UIRefreshControl *)refreshControl
 {
     if(self.refreshBlock)
@@ -60,21 +62,33 @@
 
 -(void)setHeaderView:(UIView *)headerView
 {
-    [_headerView removeFromSuperview];
+    [self.backgroundView removeFromSuperview];
     _headerView = headerView;
-    [self addSubview:headerView];
+    self.headerViewHeight = headerView.frame.size.height;
+    self.backgroundView = headerView;
+    [self setContentInset:self.contentInset];
 }
 
 -(void)layoutSubviews
 {
     [super layoutSubviews];
-    CGRect headerFrame = self.headerView.frame;
-    headerFrame.origin.y = -50;
-    self.headerView.frame = headerFrame;
-    
-    CGRect refreshControlFrame = self.refresh.frame;
-    refreshControlFrame.origin.y += -30;
-    self.refresh.frame = refreshControlFrame;
+    if(self.headerView)
+    {
+        self.headerView.frame = CGRectMake(0, -self.headerViewHeight, self.bounds.size.width, self.headerViewHeight);
+        self.refresh.frame = CGRectMake(0, -(self.headerViewHeight * 2 + 20), self.refresh.frame.size.width, self.refresh.frame.size.height);
+    }
 }
 
+-(void)setContentInset:(UIEdgeInsets)contentInset
+{
+    if (self.headerView)
+    {
+        if(self.contentOffset.y >= 0 && self.contentOffset.x >= 0)
+        {
+            contentInset.top += self.headerViewHeight;
+        }
+    }
+
+    [super setContentInset:contentInset];
+}
 @end

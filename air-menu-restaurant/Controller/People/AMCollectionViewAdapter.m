@@ -30,10 +30,14 @@
 {
     NSString *identifier = [[collectionView.identifierToCellClass allKeys] firstObject];
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
+    if(self.cellBlock)
+    {
+        self.cellBlock(cell, indexPath);
+    }
+    
     if([cell respondsToSelector:@selector(displayData:atIndexPath:)])
     {
         id dataItem = [self dataItemForIndexPath:indexPath];
-        if(self.cellBlock) self.cellBlock(cell, indexPath);
         [(id <AMDataAwareReusableView>)cell displayData:dataItem atIndexPath:indexPath];
     }
     return cell;

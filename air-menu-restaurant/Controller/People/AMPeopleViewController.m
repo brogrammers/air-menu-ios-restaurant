@@ -7,20 +7,6 @@
 //
 
 #import "AMPeopleViewController.h"
-#import "AMCollectionView.h"
-#import "AMHeaderCellWithAdd.h"
-#import "UILabel+AttributesCopy.h"
-#import "AMReorderableLayout.h"
-#import "AMFormViewController.h"
-#import <MZFormSheetController/MZFormSheetController.h>
-#import "AMBackgroundDecorationView.h"
-#import "AMStaffKindCell.h"
-#import "AMStaffMemberCell.h"
-#import "AMDataSource.h"
-#import "UICollectionView+AMCollectionViewAdapter.h"
-#import "AMPeopleCollectionViewAdapter.h"
-#import "UIImage+TextDrawing.h"
-#import "CRToastManager+AMNotification.h"
 
 @interface AMPeopleViewController () <UICollectionViewDelegate>
 @property (nonatomic, readwrite, weak) AMCollectionView *collectionView;
@@ -36,7 +22,7 @@
     if(self)
     {
         [self setup];
-        [self.source refresh];
+   //    [self.source refresh];
     }
     return self;
 }
@@ -53,17 +39,17 @@
     AMCollectionView *collectionView = [AMCollectionView collectionViewWithLayoutClass:[AMReorderableLayout class]];
     self.collectionView = collectionView;
     [self.view addSubview:collectionView];
-    [self.collectionView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+    [self.collectionView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+    self.collectionView.contentInset = UIEdgeInsetsMake(25, 0, 0, 0);
     self.collectionView.identifierToCellClass = @{@"member_cell" : [AMStaffMemberCell class]};
     self.collectionView.identifierToHeaderClass = @{@"staff_kind_header" : [AMStaffKindCell class]};
     self.collectionView.identifierToFooterClass = @{@"staff_kind_footer" : [UICollectionReusableView class]};
     self.collectionView.refreshBlock = ^{ [self.source refresh]; };
     self.collectionView.delegate = self;
-    AMHeaderCellWithAdd *header = [[AMHeaderCellWithAdd alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 30)];
+    AMHeaderCellWithAdd *header = [[AMHeaderCellWithAdd alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 40)];
     [header.titleLabel setTextWithExistingAttributes:@"Staff Kinds"];
     header.tapBlock = ^{ [self showInputForNewStaffKind]; };
     self.collectionView.headerView = header;
-    self.collectionView.contentInset = UIEdgeInsetsMake(80, 0, 0, 0);
 }
 
 -(void)configureCollectionviewLayout
