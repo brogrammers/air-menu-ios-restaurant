@@ -95,11 +95,17 @@ deleteButtonCaption:(NSString *)deleteButtonCaption
         self.view.backgroundColor = [UIColor clearColor];
         self.tableView.backgroundColor = [UIColor clearColor];
         self.seenCells = [NSMutableSet set];
-        self.tableView.contentInset = UIEdgeInsetsMake(20, 0, 40, 0);
         self.tableView.showsVerticalScrollIndicator = NO;
         [self.view addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapBackground:)]];
     }
     return self;
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.tableView setContentOffset:CGPointMake(0, -40)];
+    self.tableView.contentInset = UIEdgeInsetsMake(40, 0, 40, 0);
 }
 
 -(void)didTapBackground:(UIGestureRecognizer *)recgoniser
@@ -190,7 +196,7 @@ deleteButtonCaption:(NSString *)deleteButtonCaption
     XLFormDescriptor *restaurantForm = [XLFormDescriptor formDescriptorWithTitle:@"New Restaurant"];
     
     XLFormSectionDescriptor *aboutSection = [XLFormSectionDescriptor formSectionWithTitle:@"About"];
-    [@[@"description", @"name", @"kind"] each:^(NSString *title) {
+    [@[@"description", @"name", @"category"] each:^(NSString *title) {
         XLFormRowDescriptor *row = [XLFormRowDescriptor formRowDescriptorWithTag:title rowType:XLFormRowDescriptorTypeText title:title];
         row.required = YES;
         [aboutSection addFormRow:row];
@@ -228,6 +234,7 @@ deleteButtonCaption:(NSString *)deleteButtonCaption
     XLFormDescriptor *form = controller.form;
     [controller setTitle:@"Update Restaurant"];
     [[form formRowWithTag:@"name"] setValue:restaurant.name];
+    [[form formRowWithTag:@"category"] setValue:restaurant.category];
     [[form formRowWithTag:@"address line 1"] setValue:restaurant.address.addressLine1];
     [[form formRowWithTag:@"address line 2"] setValue:restaurant.address.addressLine2];
     [[form formRowWithTag:@"city"] setValue:restaurant.address.city];
@@ -236,7 +243,6 @@ deleteButtonCaption:(NSString *)deleteButtonCaption
     [[form formRowWithTag:@"country"] setValue:restaurant.address.country];
     [[form formRowWithTag:@"description"] setValue:@"Great food every day!"];
     [[form formRowWithTag:@"map"] setValue:restaurant.location];
-    [[form formRowWithTag:@"kind"] setValue:@"Portuguese"];
     return controller;
 }
 
@@ -244,6 +250,8 @@ deleteButtonCaption:(NSString *)deleteButtonCaption
 {
     XLFormDescriptor *staffKindForm = [XLFormDescriptor formDescriptorWithTitle:@"New staff kind"];
     XLFormSectionDescriptor *section = [XLFormSectionDescriptor formSectionWithTitle:@"About staff kind"];
+    XLFormSectionDescriptor *staffKindPrivlidges = [XLFormSectionDescriptor formSectionWithTitle:@"Privlidges"];
+
     [@[@"name", @"handles orders ?", @"handles items ?"] each:^(NSString *title) {
         XLFormRowDescriptor *row;
         if ([title characterAtIndex:title.length - 1] == '?')
@@ -259,7 +267,14 @@ deleteButtonCaption:(NSString *)deleteButtonCaption
         [section addFormRow:row];
     }];
     
+    [[AMOAuthToken scopesStrings] each:^(id scope) {
+        NSString *scopeName = [scope stringByReplacingOccurrencesOfString:@"_" withString:@" "];
+        XLFormRowDescriptor *row = [XLFormRowDescriptor formRowDescriptorWithTag:scope rowType:XLFormRowDescriptorTypeBooleanCheck title:scopeName];
+        [staffKindPrivlidges addFormRow:row];
+    }];
+    
     [staffKindForm addFormSection:section];
+    [staffKindForm addFormSection:staffKindPrivlidges];
     AMFormViewController *controller = [[AMFormViewController alloc] initWithForm:staffKindForm
                                                                          formMode:XLFormModeCreate
                                                                  showCancelButton:YES
@@ -319,7 +334,18 @@ deleteButtonCaption:(NSString *)deleteButtonCaption
         [staffMemberSection addFormRow:row];
     }];
     
+    XLFormSectionDescriptor *staffMemberPrivlidges = [XLFormSectionDescriptor formSectionWithTitle:@"Privlidges"];
+    
+    
+    [[AMOAuthToken scopesStrings] each:^(id scope) {
+        NSString *scopeName = [scope stringByReplacingOccurrencesOfString:@"_" withString:@" "];
+        XLFormRowDescriptor *row = [XLFormRowDescriptor formRowDescriptorWithTag:scope rowType:XLFormRowDescriptorTypeBooleanCheck title:scopeName];
+        [staffMemberPrivlidges addFormRow:row];
+    }];
+    
+    
     [staffMemberSectionForm addFormSection:staffMemberSection];
+    [staffMemberSectionForm addFormSection:staffMemberPrivlidges];
     AMFormViewController *controller = [[AMFormViewController alloc] initWithForm:staffMemberSectionForm
                                                                          formMode:XLFormModeCreate
                                                                  showCancelButton:YES
@@ -439,6 +465,35 @@ deleteButtonCaption:(NSString *)deleteButtonCaption
                                                                  showDeleteButton:NO
                                                               deleteButtonCaption:@""
                                                                        tableStyle:UITableViewStyleGrouped];
+    return controller;
+}
+
++(AMFormViewController *)updateMenuItemViewController:(AMMenuItem *)item
+{
+    XLFormDescriptor *itemFormDecriptor =  [XLFormDescriptor formDescriptorWithTitle:@"Update Menu Item"];
+    XLFormSectionDescriptor *itemFormSection = [XLFormSectionDescriptor formSectionWithTitle:@"About item"];
+    [@[@"name", @"description", @"currency"] each:^(NSString *name) {
+        XLFormRowDescriptor *row = [XLFormRowDescriptor formRowDescriptorWithTag:name rowType:XLFormRowDescriptorTypeText title:name];
+        row.required = YES;
+        [itemFormSection addFormRow:row];
+    }];
+    
+    XLFormRowDescriptor *row = [XLFormRowDescriptor formRowDescriptorWithTag:@"price" rowType:XLFormRowDescriptorTypeNumber title:@"price"];
+    row.required = YES;
+    [itemFormSection addFormRow:row];
+    [itemFormDecriptor addFormSection:itemFormSection];
+    AMFormViewController *controller = [[AMFormViewController alloc] initWithForm:itemFormDecriptor
+                                                                         formMode:XLFormModeEdit
+                                                                 showCancelButton:NO
+                                                                   showSaveButton:NO
+                                                                 showDeleteButton:NO
+                                                              deleteButtonCaption:@""
+                                                                       tableStyle:UITableViewStyleGrouped];
+    [[itemFormDecriptor formRowWithTag:@"name"] setValue:item.name];
+    [[itemFormDecriptor formRowWithTag:@"description"] setValue:item.details];
+    [[itemFormDecriptor formRowWithTag:@"currency"] setValue:item.currency];
+    [[itemFormDecriptor formRowWithTag:@"price"] setValue:item.price];
+    
     return controller;
 }
 @end

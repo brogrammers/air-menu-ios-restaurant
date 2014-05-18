@@ -21,7 +21,7 @@
 typedef void (^Action)();
 
 @interface AMAppDelegate() <AMLoginViewControllerDelegate, MSDynamicsDrawerViewControllerDelegate>
-@property (nonatomic, readwrite, weak) AMLoginViewContoller *loginViewController;
+@property (nonatomic, readwrite,  weak) AMLoginViewContoller *loginViewController;
 @end
 
 @implementation AMAppDelegate
@@ -39,7 +39,7 @@ typedef void (^Action)();
     self.window.layer.contents = (id) [UIImage imageNamed:@"background_ipad"].CGImage;
 
     [[AMClient sharedClient] registerHadnler:^{
-        [self didLogout];
+        [self logOut];
     } forErrorCode:@"401"];
     
     if([[AMClient sharedClient] isLoggedIn])
@@ -51,8 +51,33 @@ typedef void (^Action)();
         [self showLoginViewControllerAnimate:NO];
     }
     
+    
     [window makeKeyAndVisible];
     return YES;
+}
+
+-(void)logOut
+{
+    [[AMClient sharedClient] logOut];
+    [self didLogout];
+}
+
+-(void)didLogout
+{
+    [self animateApplicationDisapperiance:^{
+        [self showLoginViewControllerAnimate:YES];
+    }];
+}
+
+-(void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
+{
+    NSLog(@"error %@", error);
+}
+
+-(void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
+//    [[AMClient sharedClient].requestSerializer setValue:[[UIDevice currentDevice].identifierForVendor UUIDString] forHTTPHeaderField:@"X-Device-UUID"];
+//    [[AMClient sharedClient].requestSerializer setValue:deviceToken.description forHTTPHeaderField:@"X-Device-Token"];
 }
 
 -(void)didLogin
@@ -66,13 +91,19 @@ typedef void (^Action)();
         else if(user.type == AMUserTypeOwner)
         {
             viewController = [[AMOwnerNavigationController alloc] initWithScopes:user.scopes user:user];
+            [self regiterDeviceForCurrentUser];
         }
         else if(user.type == AMUserTypeStaffMember)
         {
-            viewController = [[AMStaffMemberNavigationController alloc] initWithScopes:user.scopes user:user];
+            [[AMClient sharedClient] findStaffMemberWithIdentifier:user.identifier.description completion:^(AMStaffMember *staffMember, NSError *error) {
+                UIViewController *viewController = [[AMStaffMemberNavigationController alloc] initWithScopes:user.scopes user:user staffMember:staffMember];
+                ((MSDynamicsDrawerViewController *)viewController).shouldAlignStatusBarToPaneView = NO;
+                self.window.rootViewController = viewController;
+           //     [self registerCurrentDeviceForRestaurant:staffMember.restaurant];
+                [self animateApplicationApperiance:nil];
+            }];
         }
         
-        ((MSDynamicsDrawerViewController *)viewController).shouldAlignStatusBarToPaneView = NO;
         self.window.rootViewController = viewController;
         [self animateApplicationApperiance:nil];
     }];
@@ -145,12 +176,44 @@ typedef void (^Action)();
                      }];
 }
 
--(void)didLogout
+
+-(void)registerCurrentDeviceForRestaurant:(AMRestaurant *)restaurant
 {
-    [self animateApplicationDisapperiance:^{
-        [self showLoginViewControllerAnimate:YES];
-    }];
+    [[AMClient sharedClient] createDeviceOfRestaurant:restaurant
+                                             withName:@"ios-device"
+                                                 uuid:[[UIDevice currentDevice].identifierForVendor UUIDString]
+                                                token:@"" 
+                                             platform:@"ios"
+                                           completion:^(AMDevice *device, NSError *error) {
+                                               if(!error)
+                                               {
+                                                   NSLog(@"success");
+                                               }
+                                               else
+                                               {
+                                                   NSLog(@"%@", error);
+                                               }
+                                           }];
 }
+
+-(void)regiterDeviceForCurrentUser
+{
+    [[AMClient sharedClient] createDeviceOfCurrentUserWithName:@"iphone_device"
+                                                          uuid:[[UIDevice currentDevice].identifierForVendor UUIDString]
+                                                         token:@""   
+                                                      platform:@"ios"
+                                                    completion:^(AMDevice *device, NSError *error) {
+                                                        if(!error)
+                                                        {
+                                                            NSLog(@"success");
+                                                        }
+                                                        else
+                                                        {
+                                                            NSLog(@"%@", error);
+                                                        }
+                                                    }];
+}
+
 
 @end
 

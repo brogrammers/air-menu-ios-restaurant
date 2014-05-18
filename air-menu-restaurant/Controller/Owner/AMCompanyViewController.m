@@ -63,9 +63,7 @@
                     NSUInteger index = [restaurants indexOfObject:restaurant];
                     [self.collectionView insertItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:index inSection:0]]];
                 }];
-                
                 self.restaurants = [restaurants mutableCopy];
-
             } completion:nil];
         }
         else
@@ -166,6 +164,7 @@
         XLFormDescriptor *form = weakUpdateController.form;
         [[AMClient sharedClient] updateRestaurant:restaurant
                                       withNewName:[[form formRowWithTag:@"name"] value]
+                                      newCategory:[[form formRowWithTag:@"category"] value]
                                    newDescription:[[form formRowWithTag:@"description"] value]
                                 newAddressLineOne:[[form formRowWithTag:@"address line 1"] value]
                                 newAddressLineTwo:[[form formRowWithTag:@"address line 2"] value]
@@ -209,11 +208,9 @@
     [weakCreateController setAction:^{
         XLFormDescriptor *form = weakCreateController.form;
         [[AMClient sharedClient] createRestaurantOfCompany:self.user.company
-                                                  withName:[[form formRowWithTag:@"name"] value]
+                                                  category:[[form formRowWithTag:@"category"] value]
                                                description:[[form formRowWithTag:@"description"] value]
-                                                   loyalty:YES
-                                               remoteOrder:YES
-                                            conversionRate:@2.5
+                                                  withName:[[form formRowWithTag:@"name"] value]
                                             addressLineOne:[[form formRowWithTag:@"address line 1"] value]
                                             addressLineTwo:[[form formRowWithTag:@"address line 2"] value]
                                                       city:[[form formRowWithTag:@"city"] value]
@@ -222,6 +219,7 @@
                                                    country:[[form formRowWithTag:@"country"] value]
                                                   latitude:[[[form formRowWithTag:@"map"] value] coordinate].latitude
                                                  longitude:[[[form formRowWithTag:@"map"] value] coordinate].longitude
+                                                     image:nil
                                                 completion:^(AMRestaurant *restaurant, NSError *error) {
                                                     if(error)
                                                     {

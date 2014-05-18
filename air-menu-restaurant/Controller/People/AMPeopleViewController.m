@@ -7,6 +7,7 @@
 //
 
 #import "AMPeopleViewController.h"
+#import "MZFormSheetController+AMTransitionStyle.h"
 
 @interface AMPeopleViewController () <UICollectionViewDelegate>
 @property (nonatomic, readwrite, weak) AMCollectionView *collectionView;
@@ -50,6 +51,9 @@
     [header.titleLabel setTextWithExistingAttributes:@"Staff Kinds"];
     header.tapBlock = ^{ [self showInputForNewStaffKind]; };
     self.collectionView.headerView = header;
+    AMReorderableLayout *layout = (AMReorderableLayout *) self.collectionView.collectionViewLayout;
+    layout.minimumInteritemSpacing = 0;
+    layout.minimumInteritemSpacing = 0;
 }
 
 -(void)configureCollectionviewLayout
@@ -57,7 +61,7 @@
     UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
     [self.collectionView.collectionViewLayout registerClass:[AMBackgroundDecorationView class] forDecorationViewOfKind:@"background"];
     flowLayout.itemSize = CGSizeMake(320, 70);
-    flowLayout.headerReferenceSize = CGSizeMake(320, 160);
+    flowLayout.headerReferenceSize = CGSizeMake(320, 110);
     flowLayout.footerReferenceSize = CGSizeMake(320, 20);
 }
 
@@ -107,12 +111,7 @@
         [self createStaffMemberFromInputOfStaffKind:staffKind];
     } forTitle:@"create"];
     controller.tableView.contentInset = UIEdgeInsetsMake(-15, 0, 0, 0);
-    MZFormSheetController *transitionController = [[MZFormSheetController alloc] initWithSize:CGSizeMake(self.view.bounds.size.width - 10, self.view.bounds.size.height)
-                                                                               viewController:controller];
-    [transitionController setTransitionStyle:MZFormSheetTransitionStyleDropDown];
-    transitionController.didTapOnBackgroundViewCompletionHandler = ^(CGPoint point){
-        [controller mz_dismissFormSheetControllerAnimated:YES completionHandler:nil];
-    };
+    MZFormSheetController *transitionController = [MZFormSheetController withSize:self.view.bounds.size controller:controller];
     [self mz_presentFormSheetController:transitionController animated:YES completionHandler:nil];
 }
 
@@ -123,12 +122,7 @@
     [controller setAction:^{
         [self createStaffKindFromInput];
     } forTitle:@"create"];
-    MZFormSheetController *transitionController = [[MZFormSheetController alloc] initWithSize:CGSizeMake(self.view.bounds.size.width - 10, self.view.bounds.size.height * 0.75)
-                                                                               viewController:controller];
-    [transitionController setTransitionStyle:MZFormSheetTransitionStyleDropDown];
-    transitionController.didTapOnBackgroundViewCompletionHandler = ^(CGPoint point){
-        [controller mz_dismissFormSheetControllerAnimated:YES completionHandler:nil];
-    };
+    MZFormSheetController *transitionController = [MZFormSheetController withSize:self.view.bounds.size controller:controller];
     [self mz_presentFormSheetController:transitionController animated:YES completionHandler:nil];
 }
 
@@ -143,11 +137,27 @@
                                                        password:[[form formRowWithTag:@"password"] value]
                                                           email:[[form formRowWithTag:@"email"] value]
                                                       staffKind:staffKind.identifier.stringValue
+                                                         avatar:nil
+                                                         scopes:[self scopesFromController:self.formViewController]
                                                      completion:^(AMStaffMember *staffMember, NSError *error) {
                                                          [self.source refresh];
                                                      }];
     }
     [self dismissForm];
+}
+
+-(AMOAuthScope)scopesFromController:(AMFormViewController *)controller
+{
+    __block AMOAuthScope scope = AMOAuthScopeNone;
+    XLFormDescriptor *form = controller.form;
+    [[AMOAuthToken scopesStrings] each:^(id object) {
+        NSNumber *scopeRowValue = [[form formRowWithTag:object] value];
+        if([scopeRowValue isEqualToNumber:@(YES)])
+        {
+            scope |= [[AMOAuthToken scopesToNumberMapping][object] unsignedIntegerValue];
+        }
+    }];
+    return scope;
 }
 
 -(void)createStaffKindFromInput
@@ -159,6 +169,7 @@
                                                     withName:[[form formRowWithTag:@"name"] value]
                                                 acceptOrders:[[[form formRowWithTag:@"handles orders ?"] value] boolValue]
                                            acceptsOrderItems:[[[form formRowWithTag:@"handles items ?"] value] boolValue]
+                                                      scopes:[self scopesFromController:self.formViewController]
                                                   completion:^(AMStaffKind *staffKind, NSError *error) {
                                                       [self.source refresh];
                                                   }];

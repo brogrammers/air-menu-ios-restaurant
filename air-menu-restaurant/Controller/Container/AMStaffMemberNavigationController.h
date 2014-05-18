@@ -10,5 +10,6 @@
 #import "AMScopeDrivenNavigationController.h"
 
 @interface AMStaffMemberNavigationController : AMScopeDrivenNavigationController
-
+@property (nonatomic, readwrite, strong) AMStaffMember *staffMember;
+-(id)initWithScopes:(NSArray *)scopes user:(AMUser *)user staffMember:(AMStaffMember *)member;
 @end

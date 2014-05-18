@@ -7,6 +7,7 @@
 //
 
 #import "AMBackgroundDecorationView.h"
+#import "AMLineSpacer.h"
 
 @implementation AMBackgroundDecorationView
 
@@ -15,18 +16,30 @@
     self = [super initWithFrame:frame];
     if (self)
     {
-        self.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.1];
+        [self setup];
     }
     return self;
 }
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
+-(void)setup
 {
-    // Drawing code
+    AMLineSpacer *spacerTop = [AMLineSpacer newAutoLayoutView];
+    AMLineSpacer *spacerBottom = [AMLineSpacer newAutoLayoutView];
+    
+    [self addSubview:spacerTop];
+    [spacerTop autoPinEdge:ALEdgeLeading toEdge:ALEdgeLeading ofView:self withOffset:20.0f];
+    [spacerTop autoPinEdge:ALEdgeTrailing toEdge:ALEdgeTrailing ofView:self withOffset:-20.0];
+    [spacerTop autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self withOffset:0.0f];
+    [spacerTop autoSetDimension:ALDimensionHeight toSize:1.0];
+    spacerTop.alpha = 1.0;
+    spacerTop.shouldFade = NO;
+    
+    [self addSubview:spacerBottom];
+    [spacerBottom autoPinEdge:ALEdgeLeading toEdge:ALEdgeLeading ofView:self withOffset:20.0f];
+    [spacerBottom autoPinEdge:ALEdgeTrailing toEdge:ALEdgeTrailing ofView:self withOffset:-20.0];
+    [spacerBottom autoPinEdge:ALEdgeBottom toEdge:ALEdgeBottom ofView:self withOffset:0.0f];
+    [spacerBottom autoSetDimension:ALDimensionHeight toSize:1.0];
+    spacerBottom.alpha = 1.0;
+    spacerBottom.shouldFade = NO;
 }
-*/
-
 @end

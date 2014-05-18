@@ -13,5 +13,6 @@
 {
     AMMenu *menu = item;
     [self setName:menu.name];
+    [self setActive:[menu.isActive boolValue]];
 }
 @end

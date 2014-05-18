@@ -152,6 +152,7 @@
         }
         
         [menuCell setNeedsLayout];
+        [menuCell setNeedsDisplay];
         menuCell.indexPath = indexPath;
         menuCell.leftImage = [UIImage drawText:@"" inImageWithSize:CGSizeMake(30, 30) atPoint:CGPointZero withFont:[UIFont fontWithName:ICON_FONT size:30.0f]];
         menuCell.rightImage = [UIImage drawText:@"" inImageWithSize:CGSizeMake(25, 25) atPoint:CGPointZero withFont:[UIFont fontWithName:ICON_FONT size:25.0f]];
@@ -353,6 +354,7 @@
     XLFormDescriptor *form = self.form.form;
     [[AMClient sharedClient] updateMenu:menu
                               newActive:[[[form formRowWithTag:@"active"] value] boolValue]
+                                newName:[[form formRowWithTag:@"name"] value]
                              completion:^(AMMenu *menu, NSError *error) {
                                  if(error)
                                  {
@@ -440,6 +442,7 @@
                                            price:[[numberFormatter stringFromNumber:[[form formRowWithTag:@"price"] value]] uppercaseString]
                                         currency:[[form formRowWithTag:@"currency"] value]
                                      staffKindId:@"1"
+                                          avatar:nil
                                       completion:^(AMMenuItem *item, NSError *error) {
                                           if(error)
                                           {

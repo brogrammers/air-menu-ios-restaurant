@@ -139,4 +139,5 @@
     [mapView autoSetDimension:ALDimensionHeight toSize:400];
     mapView.layer.cornerRadius = 15.0;
 }
+
 @end

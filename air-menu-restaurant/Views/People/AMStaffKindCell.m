@@ -16,7 +16,6 @@
 @property (nonatomic, readwrite, weak) UILabel *memberCountLabel;
 @property (nonatomic, readwrite, weak) UILabel *acceptsOrdersLabel;
 @property (nonatomic, readwrite, weak) UILabel *acceptsItemsLabel;
-@property (nonatomic, readwrite, weak) AMLineSpacer *spacer;
 @property (nonatomic, readwrite, weak) AMButton *addMemberButton;
 @end
 
@@ -40,7 +39,6 @@
     [self setupMembersCountLabel];
     [self setupAcceptsOrderItemsLabel];
     [self setupAcceptsOrdersLabel];
-    [self setupSeparator];
     [self setupButton];
 }
 
@@ -50,7 +48,7 @@
     self.staffKindLabel = staffKindLabel;
     [self.contentView addSubview:self.staffKindLabel];
     [self.staffKindLabel autoPinEdge:ALEdgeLeading toEdge:ALEdgeLeading ofView:self.contentView withOffset:20.0f];
-    [self.staffKindLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.contentView withOffset:20.0f];
+    [self.staffKindLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeTop ofView:self.contentView withOffset:10.0f];
     self.staffKindLabel.attributes = @{NSFontAttributeName : [UIFont fontWithName:GOTHAM_BOOK size:20.0f],
                                        NSForegroundColorAttributeName : [UIColor whiteColor]};
     
@@ -92,18 +90,6 @@
     self.acceptsOrdersLabel.textAlignment = NSTextAlignmentCenter;
 }
 
--(void)setupSeparator
-{
-    AMLineSpacer *spacer = [AMLineSpacer newAutoLayoutView];
-    self.spacer = spacer;
-    [self.contentView addSubview:self.spacer];
-    [self.spacer autoPinEdge:ALEdgeLeading toEdge:ALEdgeLeading ofView:self.contentView withOffset:20.0f];
-    [self.spacer autoPinEdge:ALEdgeTrailing toEdge:ALEdgeTrailing ofView:self.contentView withOffset:-20.0f];
-    [self.spacer autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.memberCountLabel withOffset:20.0f];
-    [self.spacer autoSetDimension:ALDimensionHeight toSize:1.0f];
-    spacer.shouldFade = NO;
-}
-
 -(void)setupButton
 {
     AMButton *newMemberButton = [AMButton button];
@@ -111,7 +97,7 @@
     self.addMemberButton.translatesAutoresizingMaskIntoConstraints = NO;
     [self.contentView addSubview:self.addMemberButton];
     [self.addMemberButton autoAlignAxis:ALAxisVertical toSameAxisOfView:self.contentView];
-    [self.addMemberButton autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.spacer withOffset:20.0f];
+    [self.addMemberButton autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.acceptsItemsLabel withOffset:15.0f];
     [newMemberButton setTitle:@"add new member" forState:UIControlStateNormal];
     [newMemberButton setFontSize:12.0f];
     [newMemberButton addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpInside];

@@ -13,7 +13,7 @@
 @optional
 @property (nonatomic, readwrite, weak) AMDataSource *dataSource;
 -(void)adaptView:(UIView *)view;
--(void)refreshView:(UIView *)view;
+-(void)refreshView:(UIView *)view oldData:(id)oldData;
 @end
 
 typedef void (^Done)(id data);

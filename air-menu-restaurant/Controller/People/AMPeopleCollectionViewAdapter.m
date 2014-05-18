@@ -73,4 +73,9 @@
     return YES;
 }
 
+-(void)refreshView:(UIView *)view oldData:(id)oldData
+{
+    UICollectionView *collectionView = (UICollectionView *)view;
+    [collectionView reloadData];
+}
 @end

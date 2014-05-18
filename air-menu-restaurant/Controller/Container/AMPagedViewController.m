@@ -43,6 +43,26 @@
 @end
 
 
+@interface AMNiceCollectionView : UICollectionView <UIGestureRecognizerDelegate>
+@end
+
+@implementation AMNiceCollectionView
+-(id)initWithFrame:(CGRect)frame collectionViewLayout:(UICollectionViewLayout *)layout
+{
+    self = [super initWithFrame:frame collectionViewLayout:layout];
+    if(self)
+    {
+        self.panGestureRecognizer.delegate = self;
+    }
+    return self;
+}
+
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
+{
+    return [gestureRecognizer locationInView:gestureRecognizer.view].y < self.bounds.size.height * 0.1;
+}
+@end
+
 @implementation AMPagedViewControllerContainerCell
 @end
 
@@ -66,7 +86,7 @@ typedef enum {ScrollDirectionLeft, ScrollDirectionRight, ScrollDirectionNone} Sc
     if(!_labels)
     {
         UICollectionViewFlowLayout *centeringLayout = [[UICollectionViewFlowLayout alloc] init];
-        UICollectionView *labels = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:centeringLayout];
+        UICollectionView *labels = [[AMNiceCollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:centeringLayout];
         labels.translatesAutoresizingMaskIntoConstraints = NO;
         labels.dataSource = self;
         labels.delegate = self;
@@ -81,7 +101,7 @@ typedef enum {ScrollDirectionLeft, ScrollDirectionRight, ScrollDirectionNone} Sc
     if(!_contents)
     {
         UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
-        UICollectionView *contents = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:flowLayout];
+        UICollectionView *contents = [[AMNiceCollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:flowLayout];
         contents.translatesAutoresizingMaskIntoConstraints = NO;
         contents.dataSource = self;
         contents.delegate = self;

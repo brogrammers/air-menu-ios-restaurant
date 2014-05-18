@@ -10,6 +10,7 @@
 #import "AMPeopleViewController.h"
 #import "AMDevicesViewController.h"
 #import "AMMenusViewController.h"
+#import "AMMeViewController.h"
 
 @interface AMRestaurantViewPickerViewController ()
 
@@ -69,6 +70,11 @@
         [names addObject:@"DEVICES"];
         [icons addObject:@""];
     }
+    
+    
+    [controllers addObject:[[AMMeViewController alloc] initWithUser:self.user]];
+    [names addObject:@"ME"];
+    [icons addObject:@""];
     
     self.names = names;
     self.icons = icons;

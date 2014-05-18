@@ -66,14 +66,13 @@
     [sections each:^(AMMenuSection *section) {
         AMMenuSectionViewController *sectionViewController = [[AMMenuSectionViewController alloc] initWithSection:section];
         [self addViewController:sectionViewController forLabelWithText:section.name];
-        if ([sections indexOfObject:section] % 2== 0) {
-            sectionViewController.view.backgroundColor = [[UIColor blueColor] colorWithAlphaComponent:0.5];
-        }
-        else
-        {
-            sectionViewController.view.backgroundColor = [[UIColor greenColor] colorWithAlphaComponent:0.5];
-        }
     }];
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.view setNeedsLayout];
 }
 
 -(AMMenuSection *)currentlySelectedMenuSection

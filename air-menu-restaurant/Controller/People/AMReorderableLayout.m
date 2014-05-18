@@ -55,6 +55,7 @@
     {
         UICollectionViewLayoutAttributes *attr = [self layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionHeader atIndexPath:indexPath];
         attributes.frame = CGRectUnion(attributes.frame, attr.frame);
+
     }
     
     attributes.zIndex = -1000;

@@ -21,5 +21,6 @@ typedef void (^FormAction)();
 +(AMFormViewController *)createSectionViewController;
 +(AMFormViewController *)updateSectionViewController:(AMMenuSection *)section;
 +(AMFormViewController *)createMenuItemViewController;
++(AMFormViewController *)updateMenuItemViewController:(AMMenuItem *)item;
 -(void)setAction:(FormAction)action forTitle:(NSString *)title;
 @end

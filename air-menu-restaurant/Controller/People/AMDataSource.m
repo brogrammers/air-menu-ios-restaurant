@@ -84,10 +84,11 @@
 
 -(void)processData:(id)data
 {
+    id oldData = _data;
     _data = data;
-    if([_dataAdapter respondsToSelector:@selector(refreshView:)])
+    if([_dataAdapter respondsToSelector:@selector(refreshView:oldData:)])
     {
-        [self.dataAdapter refreshView:self.dataDestination];
+        [self.dataAdapter refreshView:self.dataDestination oldData:oldData];
     }
 }
 
