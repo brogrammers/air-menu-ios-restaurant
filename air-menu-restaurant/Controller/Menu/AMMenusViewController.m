@@ -32,7 +32,6 @@
     if(self)
     {
         [self setup];
-        [self.source refresh];
     }
     return self;
 }
@@ -51,7 +50,6 @@
     self.menusCollectionView.contentInset = UIEdgeInsetsMake(30, 0, 0, 0);
     self.menusCollectionView.identifierToCellClass = @{@"menuCell" : [AMMenuCell class]};
     self.menusCollectionView.identifierToHeaderClass = @{@"headerCell" : [AMHeaderCellWithAdd class]};
-    self.menusCollectionView.delegate = self;
     [(UICollectionViewFlowLayout *)self.menusCollectionView.collectionViewLayout setSectionInset:UIEdgeInsetsMake(25, 0, 0, 0)];
     self.menuViewControllers = [NSMutableArray array];
     self.menusCollectionView.refreshBlock = ^{
@@ -72,10 +70,12 @@
                                                         [CRToastManager showErrorWithMessage:[error localizedDescription]];
                                                         return;
                                                     }
-                                                    
+                                                                                                        
                                                     [self setupMenuViewControllersForMenus:menus];
                                                     [self.menusCollectionView didEndRefreshing];
                                                     block(menus);
+                                                    self.menusCollectionView.delegate = self;
+
                                                 }];
         } destination:self.menusCollectionView adapter:[self createAdapter]];
     }
@@ -182,11 +182,11 @@
 {
     if([indexPath isEqual:self.expandedCell])
     {
-        return CGSizeMake(self.view.bounds.size.width, self.view.bounds.size.height - 20);
+        return CGSizeMake(collectionView.bounds.size.width, self.view.bounds.size.height - 20);
     }
     else
     {
-        return CGSizeMake(self.view.bounds.size.width, 60);
+        return CGSizeMake(collectionView.bounds.size.width, 60);
     }
 }
 

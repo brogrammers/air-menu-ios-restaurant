@@ -7,12 +7,84 @@
 //
 
 #import "AMOrderItemViewController.h"
+#import "AMPagedViewController.h"
+#import "AMOrderItemWithStateViewController.h"
+#import "AMAppDelegate.h"
 
 @interface AMOrderItemViewController ()
-
+@property (nonatomic, strong) AMPagedViewController *itemsViewContoller;
 @end
 
 @implementation AMOrderItemViewController
 
+-(id)initWithScopes:(NSArray *)scopes user:(AMUser *)user
+{
+    self = [super initWithScopes:scopes user:user];
+    if(self)
+    {
+        [self configure];
+    }
+    return self;
+}
 
+-(void)configure
+{
+    AMPagedViewController *viewController = [[AMPagedViewController alloc] init];
+    self.itemsViewContoller = viewController;
+    [self addChildViewController:viewController];
+    viewController.view.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:viewController.view];
+    [self.itemsViewContoller.view autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
+    [self.itemsViewContoller didMoveToParentViewController:self];
+    
+    AMOrderItemWithStateViewController *newOrderItem = [[AMOrderItemWithStateViewController alloc] initWithScopes:self.scopes
+                                                                                                             user:self.user
+                                                                                                    requiredState:AMOrderItemStateNew];
+    AMOrderItemWithStateViewController *approvedOrderItem = [[AMOrderItemWithStateViewController alloc] initWithScopes:self.scopes
+                                                                                                                  user:self.user
+                                                                                                         requiredState:AMOrderItemStateNew];
+    AMOrderItemWithStateViewController *startPrepareOrderItem = [[AMOrderItemWithStateViewController alloc] initWithScopes:self.scopes
+                                                                                                                      user:self.user
+                                                                                                             requiredState:AMOrderItemStateNew];
+    
+    
+    [viewController addViewController:newOrderItem forLabelWithText:@"AWAITING ORDER ITEMS"];
+    [viewController addViewController:approvedOrderItem forLabelWithText:@"YOUR ORDER ITEMS"];
+    [viewController addViewController:startPrepareOrderItem forLabelWithText:@"ORDER ITEMS BEING PREPARED"];
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    self.view.layer.contents = (id) [self backgroundImage].CGImage;
+}
+
+-(UIImage *)backgroundImage
+{
+    AMAppDelegate *delegate = [UIApplication sharedApplication].delegate;
+    CGSize size = delegate.window.bounds.size;
+    UIGraphicsBeginImageContext(size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    [self drawBackgroundImageInContext:context withSize:size];
+    UIImage *background =  UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return background;
+}
+
+-(void)drawBackgroundImageInContext:(CGContextRef)context withSize:(CGSize)size
+{
+    CGGradientRef gradient;
+    CGColorSpaceRef colorspace;
+    CGFloat locations[2] = { 0.0, 1.0 };
+    NSArray *colors = @[(id)[UIColor colorWithRed:18/255.0f green:115/255.0f blue:160/255.0f alpha:1.0].CGColor,
+                        (id)[UIColor colorWithRed:203/255.0f green:177/255.0f blue:153/255.0f alpha:1.0].CGColor];
+    colorspace = CGColorSpaceCreateDeviceRGB();
+    gradient = CGGradientCreateWithColors(colorspace, (CFArrayRef)colors, locations);
+    CGPoint startPoint, endPoint;
+    startPoint.x = 0.0;
+    startPoint.y = 0.0;
+    endPoint.x = size.width;
+    endPoint.y = size.height;
+    CGContextDrawLinearGradient(context, gradient, startPoint, endPoint, 0);
+}
 @end

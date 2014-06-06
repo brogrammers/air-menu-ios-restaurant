@@ -11,6 +11,8 @@
 #import "AMDevicesViewController.h"
 #import "AMMenusViewController.h"
 #import "AMMeViewController.h"
+#import "AMOrderViewController.h"
+#import "AMOrderItemViewController.h"
 
 @interface AMRestaurantViewPickerViewController ()
 
@@ -18,11 +20,12 @@
 
 @implementation AMRestaurantViewPickerViewController
 
--(id)initWithScopes:(NSArray *)scopes user:(AMUser *)user
+-(id)initWithScopes:(NSArray *)scopes user:(AMUser *)user staffMember:(AMStaffMember *)member
 {
     self = [super initWithScopes:scopes user:user];
     if(self)
     {
+        self.member = member;
         [self configure];
     }
     return self;
@@ -70,7 +73,20 @@
         [names addObject:@"DEVICES"];
         [icons addObject:@""];
     }
+
+    if (self.member.kind.acceptsOrders)
+    {
+        [controllers addObject:[[AMOrderViewController alloc] initWithScopes:self.scopes user:self.user]];
+        [names addObject:@"ORDERS"];
+        [icons addObject:@""];
+    }
     
+    if (self.member.kind.acceptsOrderItems)
+    {
+        [controllers addObject:[[AMOrderItemViewController alloc] initWithScopes:self.scopes user:self.user]];
+        [names addObject:@"ORDER ITEMS"];
+        [icons addObject:@""];
+    }
     
     [controllers addObject:[[AMMeViewController alloc] initWithUser:self.user]];
     [names addObject:@"ME"];

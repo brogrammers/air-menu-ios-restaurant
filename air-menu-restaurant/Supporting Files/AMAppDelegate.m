@@ -28,6 +28,7 @@ typedef void (^Action)();
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    NSLog(@"%@", [[UIDevice currentDevice] identifierForVendor]);
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeAlert|
                                                                            UIRemoteNotificationTypeBadge|
@@ -86,7 +87,7 @@ typedef void (^Action)();
         UIViewController *viewController;
         if (user.type == AMUserTypeUser)
         {
-            return;
+            [self logOut];
         }
         else if(user.type == AMUserTypeOwner)
         {
@@ -95,15 +96,12 @@ typedef void (^Action)();
         }
         else if(user.type == AMUserTypeStaffMember)
         {
-            [[AMClient sharedClient] findStaffMemberWithIdentifier:user.identifier.description completion:^(AMStaffMember *staffMember, NSError *error) {
-                UIViewController *viewController = [[AMStaffMemberNavigationController alloc] initWithScopes:user.scopes user:user staffMember:staffMember];
-                ((MSDynamicsDrawerViewController *)viewController).shouldAlignStatusBarToPaneView = NO;
-                self.window.rootViewController = viewController;
-           //     [self registerCurrentDeviceForRestaurant:staffMember.restaurant];
-                [self animateApplicationApperiance:nil];
-            }];
+            UIViewController *staffViewController = [[AMStaffMemberNavigationController alloc] initWithScopes:user.scopes user:user staffMember:user.staffMember];
+            ((MSDynamicsDrawerViewController *)staffViewController).shouldAlignStatusBarToPaneView = NO;
+            viewController = staffViewController;
+            [self animateApplicationApperiance:nil];
         }
-        
+          
         self.window.rootViewController = viewController;
         [self animateApplicationApperiance:nil];
     }];
@@ -134,8 +132,8 @@ typedef void (^Action)();
 
 -(void)loginWithUserName:(NSString *)userName password:(NSString *)password
 {
-    [[AMClient sharedClient] authenticateWithClientID:@"3449f5bc12a194ad021950970326e2e13d75fe246ad006aaed792f870cc3aaee"
-                                         clientSecret:@"7b7d80d9a048a774e1e58104d01a6d393ed7702a9203afdc0b8e44a614b2db6f"
+    [[AMClient sharedClient] authenticateWithClientID:@"f7650ea676866b456667d1b390e69c3ac56489968b5556653b7af019cbd3af6f"
+                                         clientSecret:@"77ab5a134c0688f9b322ebbb93275b78e31d7fb6f39a7b4b15dc2cd09c01f978"
                                              username:userName
                                              password:password
                                                scopes:[AMOAuthToken allScopes]

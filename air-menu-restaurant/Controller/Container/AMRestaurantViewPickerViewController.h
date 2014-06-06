@@ -10,4 +10,6 @@
 
 @interface AMRestaurantViewPickerViewController : AMPickerViewController
 @property (nonatomic, readwrite) AMRestaurant *restaurant;
+@property (nonatomic, readwrite) AMStaffMember *member;
+-(id)initWithScopes:(NSArray *)scopes user:(AMUser *)user staffMember:(AMStaffMember *)member;
 @end

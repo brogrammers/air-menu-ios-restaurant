@@ -116,6 +116,7 @@
 -(void)setName:(NSString *)name
 {
     [self.itemNameLabel setTextWithExistingAttributes:name];
+    [self.itemNameLabel sizeToFit];
 }
 
 -(void)setDescription:(NSString *)description
@@ -125,6 +126,7 @@
 
 -(void)setPrice:(NSString *)price
 {
+    if(price.length)
     [self.itemPriceLabel setTextWithExistingAttributes:price];
 }
 @end

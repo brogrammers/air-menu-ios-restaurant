@@ -135,7 +135,7 @@
                                                        withName:[[form formRowWithTag:@"name"] value]
                                                        username:[[form formRowWithTag:@"username"] value]
                                                        password:[[form formRowWithTag:@"password"] value]
-                                                          email:[[form formRowWithTag:@"email"] value]
+                                                          email:[[form formRowWithTag:@"email"] value] 
                                                       staffKind:staffKind.identifier.stringValue
                                                          avatar:nil
                                                          scopes:[self scopesFromController:self.formViewController]

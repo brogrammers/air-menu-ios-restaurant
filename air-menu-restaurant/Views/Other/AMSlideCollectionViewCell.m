@@ -15,17 +15,31 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    [super scrollViewDidScroll:scrollView];
-    
-    CGFloat xOffset = [scrollView contentOffset].x;
-    CGFloat alpha = xOffset / (320 / 2);
-    if (xOffset < 0)
+    if(!self.leftBlock && scrollView.contentOffset.x < 0.0)
     {
-        self.backgroundColor = [[UIColor redColor] colorWithAlphaComponent:fabs(alpha)];
+        CGRect bounds = scrollView.bounds;
+        bounds.origin = CGPointMake(0, 0);
+        scrollView.bounds = bounds;
     }
-    else if (xOffset > 0)
+    else if (!self.rightBlock && scrollView.contentOffset.x > scrollView.contentSize.width - scrollView.bounds.size.width)
     {
-        self.backgroundColor = [[UIColor greenColor] colorWithAlphaComponent:fabsf(alpha)];
+        CGRect bounds = scrollView.bounds;
+        bounds.origin = CGPointMake(MAX(0, scrollView.contentSize.width - scrollView.bounds.size.width), 0);
+        scrollView.bounds = bounds;
+    }
+    else
+    {
+        [super scrollViewDidScroll:scrollView];
+        CGFloat xOffset = [scrollView contentOffset].x;
+        CGFloat alpha = xOffset / (320 / 2);
+        if (xOffset < 0)
+        {
+            self.backgroundColor = [[UIColor redColor] colorWithAlphaComponent:fabs(alpha)];
+        }
+        else if (xOffset > 0)
+        {
+            self.backgroundColor = [[UIColor greenColor] colorWithAlphaComponent:fabsf(alpha)];
+        }
     }
 }
 

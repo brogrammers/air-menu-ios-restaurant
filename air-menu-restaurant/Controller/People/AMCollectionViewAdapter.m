@@ -73,25 +73,27 @@
 -(void)refreshView:(UIView *)view oldData:(id)oldData
 {
     UICollectionView *collectionView = (UICollectionView *) view;
-    [collectionView performBatchUpdates:^{
-        [[oldData toRemove:self.dataSource.data] each:^(AMRestaurant *restaurant) {
-            NSUInteger index = [oldData indexOfObject:restaurant];
-            [collectionView deleteItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:index inSection:0]]];
-        }];
+//    [collectionView performBatchUpdates:^{
+//        [[oldData toRemove:self.dataSource.data] each:^(AMRestaurant *restaurant) {
+//            NSUInteger index = [oldData indexOfObject:restaurant];
+//            [collectionView deleteItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:index inSection:0]]];
+//        }];
+//        
+//        [[oldData toUpdate:self.dataSource.data] each:^(AMRestaurant *restaurant) {
+//            NSUInteger oldIndex = [oldData indexOfObject:restaurant];
+//            NSUInteger newIndex = [self.dataSource.data indexOfObject:restaurant];
+//            [collectionView moveItemAtIndexPath:[NSIndexPath indexPathForItem:oldIndex inSection:0]
+//                                         toIndexPath:[NSIndexPath indexPathForItem:newIndex inSection:0]];
+//        }];
+//        
+//        [[oldData toAdd:self.dataSource.data] each:^(AMRestaurant *restaurant) {
+//            NSUInteger index = [self.dataSource.data indexOfObject:restaurant];
+//            [collectionView insertItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:index inSection:0]]];
+//        }];
         
-        [[oldData toUpdate:self.dataSource.data] each:^(AMRestaurant *restaurant) {
-            NSUInteger oldIndex = [oldData indexOfObject:restaurant];
-            NSUInteger newIndex = [self.dataSource.data indexOfObject:restaurant];
-            [collectionView moveItemAtIndexPath:[NSIndexPath indexPathForItem:oldIndex inSection:0]
-                                         toIndexPath:[NSIndexPath indexPathForItem:newIndex inSection:0]];
-        }];
-        
-        [[oldData toAdd:self.dataSource.data] each:^(AMRestaurant *restaurant) {
-            NSUInteger index = [self.dataSource.data indexOfObject:restaurant];
-            [collectionView insertItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:index inSection:0]]];
-        }];
-        
-    } completion:nil];
+ //   } completion:nil];
+    
+    [collectionView reloadData];
 }
 
 @end

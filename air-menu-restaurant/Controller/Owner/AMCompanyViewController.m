@@ -86,13 +86,13 @@
     self.collectionView = collectionView;
     [self.view addSubview:collectionView];
     self.collectionView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.collectionView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(20, 0, 0, 0)];
+    [self.collectionView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
     self.collectionView.delegate = self;
     self.collectionView.dataSource =self;
     self.collectionView.backgroundColor = [UIColor clearColor];
     self.view.backgroundColor = [UIColor clearColor];
     [self.collectionView registerClass:[AMRestaurantCell class] forCellWithReuseIdentifier:@"restaurant_cell"];
-    self.pickerViewController = [[AMRestaurantViewPickerViewController alloc] initWithScopes:self.scopes user:self.user];
+    self.pickerViewController = [[AMRestaurantViewPickerViewController alloc] initWithScopes:self.scopes user:self.user staffMember:nil];
     self.pickerViewController.controller = self.controller;
     [self.collectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"header"];
     self.collectionView.bounces = YES;
@@ -246,7 +246,7 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    return CGSizeMake(self.view.bounds.size.width, 70);
+    return CGSizeMake(self.collectionView.bounds.size.width - 2, 70);
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section;

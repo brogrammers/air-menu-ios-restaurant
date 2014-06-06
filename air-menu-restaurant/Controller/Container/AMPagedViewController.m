@@ -57,10 +57,10 @@
     return self;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
-{
-    return [gestureRecognizer locationInView:gestureRecognizer.view].y < self.bounds.size.height * 0.1;
-}
+//- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
+//{
+//    return [gestureRecognizer locationInView:gestureRecognizer.view].y < self.bounds.size.height * 0.1;
+//}
 @end
 
 @implementation AMPagedViewControllerContainerCell

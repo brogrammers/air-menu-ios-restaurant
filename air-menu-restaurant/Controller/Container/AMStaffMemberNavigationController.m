@@ -24,12 +24,11 @@
 -(void)viewDidLoad
 {
     [super viewDidLoad];
-    AMRestaurantViewPickerViewController *viewController = [[AMRestaurantViewPickerViewController alloc] initWithScopes:self.scopes user:self.user];
+    AMRestaurantViewPickerViewController *viewController = [[AMRestaurantViewPickerViewController alloc] initWithScopes:self.scopes user:self.user staffMember:self.staffMember];
     viewController.controller = self;
     [self addStylersFromArray:@[[MSDynamicsDrawerShadowStyler styler], [MSDynamicsDrawerResizeStyler styler], [MSDynamicsDrawerScaleStyler styler], [MSDynamicsDrawerFadeStyler styler]] forDirection:MSDynamicsDrawerDirectionLeft];
     [self setDrawerViewController:viewController forDirection:MSDynamicsDrawerDirectionLeft];
     [self setRevealWidth:310 forDirection:MSDynamicsDrawerDirectionLeft];
-    
 }
 
 @end
